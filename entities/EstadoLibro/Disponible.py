@@ -1,6 +1,8 @@
 from entities.EstadoLibro import EstadoLibro
+from entities.EstadoLibro.Prestado import Prestado
+
 
 class Disponible(EstadoLibro):
-  def prestar(libro): ...
-  
   def esDisponible() -> bool: return True
+  
+  def prestar(libro): libro.setEstado(Prestado())

@@ -6,7 +6,7 @@ class EstadoLibro(Singleton):
   
   def esDisponible() -> bool: return False
   def esExtraviado() -> bool: return False
-  def esPerdido() -> bool: return False
+  def esPrestado() -> bool: return False
   
   def prestar(libro): return
   def extraviar(libro): return
