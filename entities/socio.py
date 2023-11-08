@@ -62,6 +62,7 @@ class Socio:
   
   # METODOS
   def poseeMasDeTresPrestamos(self) -> bool: return len(self.prestamos) > 3
+  
   def poseePrestamoConDemora(self) -> bool:
     for p in self.prestamos:
       if p.estaDemorado(): return True

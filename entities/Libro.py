@@ -1,4 +1,4 @@
-from entities.EstadoLibro import EstadoLibro
+from entities.fabricacionPura.EstadoLibro import EstadoLibro
 
 class Libro:
   def __init__(self, codigo, titulo, precio, estado) -> None:

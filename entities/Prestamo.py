@@ -77,3 +77,7 @@ class Prestamo:
   def estaDemorado(self) -> bool:
     if self.haFinalizado(): return False
     return (datetime.now() - self.fecha_ini).days > self.dias
+  
+  def finalizar(self) -> None: self.fecha_fin = datetime.now()
+  
+  def extraviarLibro(self) -> None: self.libro.extraviar()

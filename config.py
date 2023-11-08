@@ -1,0 +1,1 @@
+path_bd = "./database/biblioteca.sqlite"
