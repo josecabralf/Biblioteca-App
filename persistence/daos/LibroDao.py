@@ -1,0 +1,2 @@
+class LibroDAO:
+  pass
