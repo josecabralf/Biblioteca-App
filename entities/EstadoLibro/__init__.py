@@ -1,4 +1,3 @@
-from abc import abstractmethod
 from entities.Singleton.Singleton import Singleton
 
 class EstadoLibro(Singleton):

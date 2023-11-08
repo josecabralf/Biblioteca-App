@@ -59,3 +59,10 @@ class Socio:
   
   def getPrestamos(self) -> list: return self.prestamos
   def setPrestamos(self, prestamos: list) -> None: self.prestamos = prestamos
+  
+  # METODOS
+  def poseeMasDeTresPrestamos(self) -> bool: return len(self.prestamos) > 3
+  def poseePrestamoConDemora(self) -> bool:
+    for p in self.prestamos:
+      if p.estaDemorado(): return True
+    return False
