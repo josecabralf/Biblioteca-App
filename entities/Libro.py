@@ -10,33 +10,39 @@ class Libro:
   def __str__(self) -> str:
     return f"Libro: {self.codigo} - {self.titulo} - {self.precio} - {self.estado}"
   
+  # PROPERTIES
   @property
   def codigo(self) -> str: return self._codigo
   @codigo.setter
-  def codigo(self, codigo) -> None: self._codigo = codigo
-  def get_codigo(self) -> str: return self.codigo
-  def set_codigo(self, codigo) -> None: self.codigo = codigo
+  def codigo(self, codigo: str) -> None: self._codigo = codigo
   
   @property
   def titulo(self) -> str: return self._titulo
   @titulo.setter
-  def titulo(self, titulo) -> None: self._titulo = titulo
-  def get_titulo(self) -> str: return self.titulo
-  def set_titulo(self, titulo) -> None: self.titulo = titulo
+  def titulo(self, titulo: str) -> None: self._titulo = titulo
   
   @property
   def precio(self) -> float: return self._precio
   @precio.setter
-  def precio(self, precio) -> None: self._precio = precio
-  def get_precio(self) -> float: return self.precio
-  def set_precio(self, precio) -> None: self.precio = precio
+  def precio(self, precio: float) -> None: self._precio = precio
   
   @property
   def estado(self) -> EstadoLibro: return self._estado
   @estado.setter
-  def estado(self, estado) -> None: self._estado = estado
-  def get_estado(self) -> EstadoLibro: return self.estado
-  def set_estado(self, estado) -> None: self.estado = estado
+  def estado(self, estado: EstadoLibro) -> None: self._estado = estado
+  
+  # GETTERS Y SETTERS
+  def getCodigo(self) -> str: return self.codigo
+  def setCodigo(self, codigo: str) -> None: self.codigo = codigo
+  
+  def getTitulo(self) -> str: return self.titulo
+  def setTitulo(self, titulo: str) -> None: self.titulo = titulo
+  
+  def getPrecio(self) -> float: return self.precio
+  def setPrecio(self, precio: float) -> None: self.precio = precio
+  
+  def getEstado(self) -> EstadoLibro: return self.estado
+  def setEstado(self, estado: EstadoLibro) -> None: self.estado = estado
   
   # COMPORTAMIENTO ASOCIADO A ESTADO
   def prestar(self): self.estado.prestar(self)
