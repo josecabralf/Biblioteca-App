@@ -1,8 +1,11 @@
 from entities.fabricacionPura.Singleton import Singleton
 from tkinter import ttk
+from tkinter import Tk
 
 class Pantalla(Singleton):
+  ventana = Tk()
   def __init__(self) -> None:
+    self.ventana.configure(bg = "#4c061d")
     self.estilo = ttk.Style()
     self.estilo.theme_use('xpnative')
     self.setEstiloBotones()
@@ -13,11 +16,6 @@ class Pantalla(Singleton):
     self.estilo.configure("Botones.Back", padding=10, width=10, foreground="black", bordercolor="black", borderwidth=5)
     self.estilo.map('Back', background=[('active','#B0B0B0')])
     
-  def ocultarWidgets(self): ...
-      
-  def mostrarWidgets(self): ...
-    
-  def destruir(self):
-    for widget in self.widgets: widget.destroy()
+  def destruir(self): [widget.destroy() for widget in self.widgets]
     
   def getVentana(self): return self.ventana

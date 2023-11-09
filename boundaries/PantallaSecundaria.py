@@ -3,15 +3,14 @@ from tkinter import ttk
 from tkinter import PhotoImage
 from config import png_return
 
-class PantallaSocio(Pantalla):
-    def __init__(self, ventana, volver_a_principal):
+class PantallaSecundaria(Pantalla):
+    def __init__(self, volver_a_principal):
       super().__init__()
-      self.ventana = ventana
       self.volver_a_principal = volver_a_principal
+      self.widgets = []
       self.createWidgets()
 
     def createWidgets(self):
-      self.widgets = []
       self.widgets.append(self.createBtnVolver())
       
     def createBtnVolver(self):

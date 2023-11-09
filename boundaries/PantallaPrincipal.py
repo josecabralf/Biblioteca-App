@@ -1,15 +1,19 @@
 from tkinter import ttk
 from tkinter import PhotoImage
 from config import png_reportes, png_extravios, png_libros, png_prestamos, png_socios, png_salir
-from boundaries.pantallasSocio.PantallaSocio import PantallaSocio
+from boundaries.PantallasSocios.PantallaSocios import PantallaSocios
+from boundaries.PantallasLibros.PantallaLibros import PantallaLibros
+from boundaries.PantallasPrestamos.PantallaPrestamos import PantallaPrestamos
+from boundaries.PantallasExtravios.PantallaExtravios import PantallaExtravios
+from boundaries.PantallasReportes.PantallaReportes import PantallaReportes
 from boundaries.Pantalla import Pantalla
 
 class PantallaPrincipal(Pantalla):
-    def __init__(self, ventana):
+    def __init__(self):
       super().__init__()
-      self.ventana = ventana
       self.ventana.title("Sistema de Biblioteca")
       self.createWidgets()
+      self.ventana.mainloop()
         
     def createWidgets(self):
       self.widgets = []
@@ -19,30 +23,38 @@ class PantallaPrincipal(Pantalla):
       self.widgets.append(self.createBtnExtravios())
       self.widgets.append(self.createBtnReportes())
       self.widgets.append(self.createBtnSalir())
-      self.posicionarWidgets()
+      self.mostrarWidgets()
         
-    def posicionarWidgets(self):
+    def mostrarWidgets(self):
       for i in range(0, len(self.widgets), 3):
         for j in range(3): self.widgets[i+j].grid(row=i, column=j, padx=20, pady=10)
     
-    def ocultarWidgets(self):
-        for widget in self.widgets: widget.grid_forget()
+    def ocultarWidgets(self): [widget.grid_forget() for widget in self.widgets]
+        
+    def backToMain(self, pantalla):
+        pantalla.destruir()
+        self.ventana.title("Sistema de Biblioteca")
+        self.mostrarWidgets()
     
     def socios(self):
         self.ocultarWidgets()
-        self.pantallaSocio = PantallaSocio(self.ventana, self.backToMain)
+        self.pantallaSocio = PantallaSocios(self.backToMain)
 
-    def backToMain(self, pantalla):
-        pantalla.destruir()
-        self.posicionarWidgets()
+    def libros(self): 
+      self.ocultarWidgets()
+      self.pantallaLibro = PantallaLibros(self.backToMain)
 
-    def libros(self): ...
+    def prestamos(self):
+      self.ocultarWidgets()
+      self.pantallaPrestamo = PantallaPrestamos(self.backToMain)
 
-    def prestamos(self):...
+    def extravios(self):
+      self.ocultarWidgets()
+      self.pantallaPrestamo = PantallaExtravios(self.backToMain)
 
-    def extravios(self): ...
-
-    def reportes(self): ...
+    def reportes(self): 
+      self.ocultarWidgets()
+      self.pantallaPrestamo = PantallaReportes(self.backToMain)
       
     def salir(self): self.ventana.destroy()
     
