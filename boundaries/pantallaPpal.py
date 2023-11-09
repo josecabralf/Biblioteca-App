@@ -6,15 +6,10 @@ from boundaries.Pantalla import Pantalla
 
 class PantallaPrincipal(Pantalla):
     def __init__(self, ventana):
-        self.ventana = ventana
-        self.ventana.title("Sistema de Biblioteca")
-        
-        # Crear un estilo para los botones
-        self.estilo = ttk.Style()
-        self.estilo.theme_use('xpnative')
-        self.estilo.configure("Botones.TButton", font=("Helvetica", 14, "bold"), padding=10, width=20, foreground="black", bordercolor="black", borderwidth=5)
-        self.create_btn_widgets()
-        self.estilo.map('TButton', background=[('active','#B0B0B0')])
+      super().__init__()
+      self.ventana = ventana
+      self.ventana.title("Sistema de Biblioteca")
+      self.create_btn_widgets()
 
     def create_btn_imgs(self):
       self.img_socios = PhotoImage(file=png_socios).subsample(4)
@@ -46,7 +41,6 @@ class PantallaPrincipal(Pantalla):
     def volver_a_principal(self, pantalla):
         pantalla.destruir()
         self.create_btn_widgets()
-        self.posicionar_btn_widgets()
 
     def libros(self): 
       self.ocultarWidgets()
