@@ -1,4 +1,4 @@
-from boundaries.pantallaPpal import PantallaPrincipal
+from boundaries.PantallaPrincipal import PantallaPrincipal
 import tkinter as tk
 
 if __name__ == "__main__":

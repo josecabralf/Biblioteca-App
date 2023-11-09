@@ -3,7 +3,7 @@ from entities.Libro import Libro
 from entities.Socio import Socio
 
 class Prestamo:
-  def __init__(self, id: str, libro: Libro, socio: Socio, fecha_ini: datetime, 
+  def __init__(self, id: int, libro: Libro, socio: Socio, fecha_ini: datetime, 
                dias: int, fecha_fin : datetime = None) -> None:
     self._id = id
     self._libro = libro
@@ -23,9 +23,9 @@ class Prestamo:
   
   # PROPERTIES
   @property
-  def id(self) -> str: return self._id
+  def id(self) -> int: return self._id
   @id.setter
-  def id(self, id: str) -> None: self._id = id
+  def id(self, id: int) -> None: self._id = id
   
   @property
   def libro(self) -> Libro: return self._libro
@@ -53,8 +53,8 @@ class Prestamo:
   def fecha_fin(self, fecha_fin: datetime) -> None: self._fecha_fin = fecha_fin
   
   # GETTERS Y SETTERS
-  def getId(self) -> str: return self.id
-  def setId(self, id: str) -> None: self.id = id
+  def getId(self) -> int: return self.id
+  def setId(self, id: int) -> None: self.id = id
   
   def getLibro(self) -> Libro: return self.libro
   def setLibro(self, libro: Libro) -> None: self.libro = libro

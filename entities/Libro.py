@@ -2,7 +2,7 @@ from entities.fabricacionPura.EstadoLibro import EstadoLibro
 
 class Libro:
   def __init__(self, codigo, titulo, precio, estado) -> None:
-    self._codigo : str = codigo
+    self._codigo : int = codigo
     self._titulo : str = titulo
     self._precio : float = precio
     self._estado : EstadoLibro = estado
@@ -12,9 +12,9 @@ class Libro:
   
   # PROPERTIES
   @property
-  def codigo(self) -> str: return self._codigo
+  def codigo(self) -> int: return self._codigo
   @codigo.setter
-  def codigo(self, codigo: str) -> None: self._codigo = codigo
+  def codigo(self, codigo: int) -> None: self._codigo = codigo
   
   @property
   def titulo(self) -> str: return self._titulo
@@ -32,8 +32,8 @@ class Libro:
   def estado(self, estado: EstadoLibro) -> None: self._estado = estado
   
   # GETTERS Y SETTERS
-  def getCodigo(self) -> str: return self.codigo
-  def setCodigo(self, codigo: str) -> None: self.codigo = codigo
+  def getCodigo(self) -> int: return self.codigo
+  def setCodigo(self, codigo: int) -> None: self.codigo = codigo
   
   def getTitulo(self) -> str: return self.titulo
   def setTitulo(self, titulo: str) -> None: self.titulo = titulo

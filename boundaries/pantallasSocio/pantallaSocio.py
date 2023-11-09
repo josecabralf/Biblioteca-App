@@ -1,6 +1,5 @@
 from boundaries.Pantalla import Pantalla
 import tkinter as ttk
-from boundaries.Pantalla import Pantalla
 
 class PantallaSocio(Pantalla):
     def __init__(self, ventana, volver_a_principal):

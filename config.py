@@ -1,14 +1,14 @@
 #====================================================================================================================
 #====================================================================================================================
 # DATA
-path_bd = "./database/biblioteca.sqlite"
+path_bd = "./resources/database/biblioteca.sqlite"
 
 #====================================================================================================================
 #====================================================================================================================
 # TKINTER
-png_socios = "./boundaries/icons/socios.png"
-png_reportes = "./boundaries/icons/reportes.png"
-png_libros = "./boundaries/icons/libros.png"
-png_extravios = "./boundaries/icons/extravios.png"
-png_prestamos = "./boundaries/icons/prestamos.png"
-png_salir = "./boundaries/icons/salir.png"
+png_socios = "./resources/icons/socios.png"
+png_reportes = "./resources/icons/reportes.png"
+png_libros = "./resources/icons/libros.png"
+png_extravios = "./resources/icons/extravios.png"
+png_prestamos = "./resources/icons/prestamos.png"
+png_salir = "./resources/icons/salir.png"

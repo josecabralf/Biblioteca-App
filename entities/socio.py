@@ -1,5 +1,5 @@
 class Socio:
-  def __init__(self, id: str, nombre: str, apellido: str, telefono: str, email: str) -> None:
+  def __init__(self, id: int, nombre: str, apellido: str, telefono: str, email: str) -> None:
     self._id = id
     self._nombre = nombre
     self._apellido = apellido
@@ -12,9 +12,9 @@ class Socio:
   
   # PROPERTIES
   @property
-  def id(self) -> str: return self._id
+  def id(self) -> int: return self._id
   @id.setter
-  def id(self, id: str) -> None: self._id = id
+  def id(self, id: int) -> None: self._id = id
   
   @property
   def nombre(self) -> str: return self._nombre
@@ -42,8 +42,8 @@ class Socio:
   def prestamos(self, prestamos: list) -> None: self._prestamos = prestamos
   
   # GETTERS Y SETTERS
-  def getId(self) -> str: return self.id
-  def setId(self, id: str) -> None: self.id = id
+  def getId(self) -> int: return self.id
+  def setId(self, id: int) -> None: self.id = id
   
   def getNombre(self) -> str: return self.nombre
   def setNombre(self, nombre: str) -> None: self.nombre = nombre
