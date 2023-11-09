@@ -1,9 +1,9 @@
-from config import path_bd
+from config import pathDB
 
 import sqlite3
 
 def crearModeloDatos():
-  conn = sqlite3.connect(path_bd)
+  conn = sqlite3.connect(pathDB)
   cursor = conn.cursor()
 
   cursor.execute('''
@@ -52,7 +52,7 @@ def crearModeloDatos():
   conn.close()
   
 def agregarDatosAModelo():
-  conn = sqlite3.connect(path_bd)
+  conn = sqlite3.connect(pathDB)
   cursor = conn.cursor()
 
   cursor.executemany('INSERT INTO Libros (titulo, precio_reposicion, id_estado) VALUES (?, ?, ?)',
