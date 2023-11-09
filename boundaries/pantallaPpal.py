@@ -1,8 +1,10 @@
 from tkinter import ttk
 from tkinter import PhotoImage
 from config import png_reportes, png_extravios, png_libros, png_prestamos, png_socios, png_salir
+from boundaries.pantallasSocio.PantallaSocio import PantallaSocio
+from boundaries.Pantalla import Pantalla
 
-class PantallaPrincipal:
+class PantallaPrincipal(Pantalla):
     def __init__(self, ventana):
         self.ventana = ventana
         self.ventana.title("Sistema de Biblioteca")
@@ -37,14 +39,25 @@ class PantallaPrincipal:
       for i in range(0, len(self._buttons), 3):
         for j in range(3): self._buttons[i+j].grid(row=i, column=j, padx=20, pady=10)
     
-    def socios(self): pass
+    def socios(self):
+        self.ocultarWidgets()
+        self.pantalla_socio = PantallaSocio(self.ventana, self.volver_a_principal)
 
-    def libros(self): pass
+    def volver_a_principal(self, pantalla):
+        pantalla.destruir()
+        self.create_btn_widgets()
+        self.posicionar_btn_widgets()
 
-    def prestamos(self): pass
+    def libros(self): 
+      self.ocultarWidgets()
 
-    def extravios(self): pass
+    def prestamos(self):
+      self.ocultarWidgets()
 
-    def reportes(self): pass
+    def extravios(self): 
+      self.ocultarWidgets()
+
+    def reportes(self):
+      self.ocultarWidgets()
       
     def salir(self): self.ventana.destroy()
