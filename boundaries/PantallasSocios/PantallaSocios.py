@@ -5,7 +5,7 @@ from tkinter import StringVar, PhotoImage
 from tkinter import messagebox
 from tkinter import LEFT, RIGHT, TOP, X, Y, BOTH, CENTER
 from tkinter.ttk import Treeview
-from config import png_search
+from config import png_search, png_refresh
 
 class PantallaSocios(PantallaSecundaria):
     def __init__(self, gestor, backToMain):
@@ -19,14 +19,25 @@ class PantallaSocios(PantallaSecundaria):
       super().createWidgets()
       self.widgets.append(self.createBarraBusqueda())
       self.widgets.append(self.createLblSociosRegistrados())
-      """self.widgets.append(self.createGrillaSocios())"""
+      self.widgets.append(self.createGrillaSocios())
 
     def validateInput(self, *args):
       entrada_actual = self.varBusqueda.get()
       if entrada_actual.isdigit(): return True
-      else:
-        self.varBusqueda.set(self.varBusqueda.get()[:-1])
-        return False
+      self.varBusqueda.set(self.varBusqueda.get()[:-1])
+      return False
+      
+    def search(self):
+      id = self.varBusqueda.get() if self.varBusqueda.get() != "" else -1
+      self.gestor.search(id)
+      
+    def refresh(self):
+      self.varBusqueda.set("")
+      self.gestor.search(-1)
+    
+    def setSocios(self, socios):
+      self.socios = socios
+      self.loadTable()
     
     def createBarraBusqueda(self):
         self.frameBusqueda = Frame(self.ventana, bg="#4c061d")
@@ -48,6 +59,9 @@ class PantallaSocios(PantallaSecundaria):
         self.imgSearch = PhotoImage(file=png_search).subsample(30)
         btnBuscar = ttk.Button(frameBarraBoton, command=self.search, image=self.imgSearch, compound="left", style="Busqueda.TButton")
         btnBuscar.pack(side=LEFT, padx=5)
+        self.imgRefresh = PhotoImage(file=png_refresh).subsample(120)
+        btnBuscar = ttk.Button(frameBarraBoton, command=self.refresh, image=self.imgRefresh, compound="left", style="Busqueda.TButton")
+        btnBuscar.pack(side=LEFT, padx=5)
         
         return self.frameBusqueda
 
@@ -57,26 +71,25 @@ class PantallaSocios(PantallaSecundaria):
         return lblSociosRegistrados
 
     def createGrillaSocios(self):
-        frame_grilla = Frame(self.ventana, bg="#4c061d")
-        frame_grilla.grid(row=2, column=1, padx=10, pady=(0, 10), sticky='nsew')
-
+        self.frame_grilla = Frame(self.ventana, bg="#4c061d")
+        self.frame_grilla.grid(row=3, column=0, padx=10, pady=(0, 10), sticky='nsew')
         columns = ("ID", "Nombre", "Apellido", "Teléfono", "Email")
-        self.treeview = Treeview(frame_grilla, columns=columns, show="headings", selectmode="browse")
+        self.treeview = Treeview(self.frame_grilla, columns=columns, show="headings", selectmode="browse")
 
-        # Configurar columnas
+        column_widths = {"ID": 50, "Nombre": 150, "Apellido": 150, "Teléfono": 150, "Email": 250}
+
         for col in columns:
             self.treeview.heading(col, text=col)
-            self.treeview.column(col, width=100, anchor=CENTER)
+            width = column_widths.get(col, 100)
+            self.treeview.column(col, width=width, anchor=CENTER)
 
-        # Configurar scrollbar
-        scrollbar = Scrollbar(frame_grilla, orient="vertical", command=self.treeview.yview)
+        scrollbar = Scrollbar(self.frame_grilla, orient="vertical", command=self.treeview.yview)
         scrollbar.pack(side=RIGHT, fill=Y)
         self.treeview.config(yscrollcommand=scrollbar.set)
-
         self.treeview.pack(fill=BOTH, expand=True)
 
-        # Configurar selección de fila
         self.treeview.bind("<ButtonRelease-1>", self.seleccionar_fila)
+        return self.frame_grilla
 
     def create_botones_accion(self):
         frame_botones = Frame(self.ventana, bg="#4c061d")
@@ -92,36 +105,25 @@ class PantallaSocios(PantallaSecundaria):
         btn_consultar.pack(side=LEFT, padx=5)
         btn_borrar.pack(side=LEFT, padx=5)
 
-    def search(self):
-        self.gestor.search(self.varBusqueda.get())
-
-    def cargar_socios_a_grilla(self):
+    def loadTable(self):
         self.treeview.delete(*self.treeview.get_children())  # Limpiar la grilla
-
         for socio in self.socios:
-            self.treeview.insert("", "end", values=(socio.id, socio.nombre, socio.apellido, socio.telefono, socio.email))
+            self.treeview.insert("", "end", 
+                                 values=(socio.id, socio.nombre, socio.apellido, socio.telefono, socio.email))
 
     def seleccionar_fila(self, event):
         seleccion = self.treeview.selection()
         if seleccion:
-            # Implementar lógica para manejar la selección de la fila
             pass
 
     def crear_socio(self):
-        # Implementar lógica para crear un socio
         pass
 
     def modificar_socio(self):
-        # Implementar lógica para modificar un socio
         pass
 
     def consultar_socio(self):
-        # Implementar lógica para consultar un socio
         pass
 
     def borrar_socio(self):
-        # Implementar lógica para borrar un socio
         pass
-      
-    def setSocios(self, socios):
-      pass
