@@ -1,7 +1,7 @@
 from entities.fabricacionPura.Singleton import Singleton
 
 class EstadoLibro(Singleton):
-  #def __str__(self) -> str: return self.__class__.__name__
+  def __str__(self) -> str: return self.__class__.__name__
   
   def esDisponible() -> bool: return False
   def esExtraviado() -> bool: return False

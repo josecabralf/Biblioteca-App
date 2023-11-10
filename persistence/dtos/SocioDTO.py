@@ -8,8 +8,10 @@ class SocioDTO:
     self._telefono = telefono
     self._email = email
   
+  def getId(self) -> int: return self._id
+  
   def asTuple(self) -> tuple:
-    return (self._id, self._nombre, self._apellido, self._telefono, self._email)
+    return (self._nombre, self._apellido, self._telefono, self._email)
   
   def asSocio(self) -> Socio:
     return Socio(self._id, self._nombre, self._apellido, self._telefono, self._email)

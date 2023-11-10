@@ -6,8 +6,8 @@ from persistence.RegistroNoEncontrado import RegistroNoEncontradoError
 class LibroDAOImplSQL(ILibroDAO):
   tableName = "Libros"
   columnas = "(titulo, precio_reposicion, id_estado)"
-  values = "titulo = ?, precio_reposicion = ?, id_estado = ?"
-  updateValues = "(?, ?, ?)"
+  updateValues = "titulo = ?, precio_reposicion = ?, id_estado = ?"
+  values = "(?, ?, ?)"
   pk = "codigo_lib"
   
   def create(self, libro: LibroDTO):
@@ -22,16 +22,17 @@ class LibroDAOImplSQL(ILibroDAO):
   def fetchAll(self) -> list:
     libros = BDHelper().fetchAll(self.tableName)
     librosDTO = []
-    for libro in libros: librosDTO.append(LibroDTO(libro[0], libro[1], libro[2], libro[3]))
+    for libro in libros: 
+      librosDTO.append(LibroDTO(libro[0], libro[1], libro[2], libro[3]))
     return librosDTO
   
-  def update(self, libro: LibroDTO, id: int):
-    self.fetchById(id)
-    datos = libro.asTuple() + (id,)
+  def update(self, libro: LibroDTO):
+    self.fetchById(libro.getId())
+    datos = libro.asTuple() + (libro.getId(),)
     BDHelper().update(self.tableName, self.updateValues, self.pk, datos)
     
   def delete(self, id: int):
     self.fetchById(id)
-    BDHelper().delete(self.tableName, (id,))
+    BDHelper().delete(self.tableName, self.pk, (id,))
   
   

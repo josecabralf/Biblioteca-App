@@ -23,15 +23,15 @@ class PrestamoDAOImplSQL(IPrestamoDAO):
   def fetchAll(self) -> list:
     prestamos = BDHelper().fetchAll(self.tableName)
     prestamosDTO = []
-    for prestamo in prestamos: prestamosDTO.append(PrestamoDTO(prestamo[0], prestamo[1], prestamo[2], prestamo[3], prestamo[4], prestamo[5]))
+    for prestamo in prestamos: 
+      prestamosDTO.append(PrestamoDTO(prestamo[0], prestamo[1], prestamo[2], prestamo[3], prestamo[4], prestamo[5]))
     return prestamosDTO
   
-  def update(self, prestamo: PrestamoDTO, id: int):
-    self.fetchById(id)
-    datos = prestamo.asTuple() + (id,)
+  def update(self, prestamo: PrestamoDTO):
+    self.fetchById(prestamo.getId())
+    datos = prestamo.asTuple() + (prestamo.getId(),)
     BDHelper().update(self.tableName, self.updateValues, self.pk, datos)
     
   def delete(self, id: int):
     self.fetchById(id)
-    datos = (id,)
-    BDHelper().delete(self.tableName, datos)
+    BDHelper().delete(self.tableName, self.pk, (id,))

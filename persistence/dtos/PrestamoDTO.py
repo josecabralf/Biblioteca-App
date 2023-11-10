@@ -13,8 +13,10 @@ class PrestamoDTO:
     self.dias = dias
     self.fecha_fin = fecha_fin
     
+  def getId(self) -> int: return self.id  
+  
   def asTuple(self):
-    return (self.id, self.libro, self.socio, self.fecha_ini, self.dias, self.fecha_fin)
+    return (self.libro, self.socio, self.fecha_ini, self.dias, self.fecha_fin)
   
   def asPrestamo(self, libro: Libro, socio: Socio):
     return Prestamo(self.id, libro, socio, self.fecha_ini, self.dias, self.fecha_fin)

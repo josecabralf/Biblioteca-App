@@ -30,7 +30,7 @@ class BDHelper(Singleton):
     self.cursor.execute(sql, datos)
     self.conexion.commit()
     
-  def delete(self, tableName: str, datos: tuple):
-    sql = f"DELETE FROM {tableName} WHERE id = ?"
+  def delete(self, tableName: str, pk: str, datos: tuple):
+    sql = f"DELETE FROM {tableName} WHERE {pk} = ?"
     self.cursor.execute(sql, datos)
     self.conexion.commit()

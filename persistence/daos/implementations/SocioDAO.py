@@ -22,15 +22,15 @@ class SocioDAOImplSQL(ISocioDAO):
   def fetchAll(self) -> list:
     socios = BDHelper().fetchAll(self.tableName)
     sociosDTO = []
-    for socio in socios: sociosDTO.append(SocioDTO(socio[0], socio[1], socio[2], socio[3], socio[4]))
+    for socio in socios: 
+      sociosDTO.append(SocioDTO(socio[0], socio[1], socio[2], socio[3], socio[4]))
     return sociosDTO
   
-  def update(self, socio: SocioDTO, id: int):
-    self.fetchById(id)
-    datos = socio.asTuple() + (id,)
+  def update(self, socio: SocioDTO):
+    self.fetchById(socio.getId())
+    datos = socio.asTuple() + (socio.getId(),)
     BDHelper().update(self.tableName, self.updateValues, self.pk, datos)
     
   def delete(self, id: int):
     self.fetchById(id)
-    datos = (id,)
-    BDHelper().delete(self.tableName, datos)
+    BDHelper().delete(self.tableName, self.pk, (id,))

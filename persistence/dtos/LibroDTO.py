@@ -14,12 +14,18 @@ class LibroDTO:
     self.precio : float = precio
     self.estado : int  = estado
     
+  def getId(self) -> int: return self.codigo  
+  
   def asTuple(self) -> tuple:
-    return (self.codigo, self.titulo, self.precio, self.estado)
+    return (self.titulo, self.precio, self.estado)
   
   def asLibro(self) -> Libro:
     return Libro(self.codigo, self.titulo, self.precio, self.dictEstados[self.estado])
   
   @classmethod
   def toDTO(cls, libro: Libro) -> 'LibroDTO':
-    return LibroDTO(libro.codigo, libro.titulo, libro.precio, libro.estado.idEstado)
+    estado = 0
+    for idEstado, estadoLibro in LibroDTO.dictEstados.items():
+        if estadoLibro == libro.getEstado(): estado = idEstado
+    return LibroDTO(libro.codigo, libro.titulo, libro.precio, estado)
+      
