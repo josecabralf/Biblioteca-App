@@ -10,7 +10,7 @@ class BDHelper(Singleton):
     self.conexion = sqlite3.connect(self._base_datos)
     self.cursor = self.conexion.cursor()
     
-  def crearRegistro(self, tableName: str, columns: str, values: str, datos: tuple):
+  def create(self, tableName: str, columns: str, values: str, datos: tuple):
     sql = f"INSERT INTO {tableName} {columns} VALUES {values}"
     self.cursor.execute(sql, datos)
     self.conexion.commit()
@@ -25,12 +25,12 @@ class BDHelper(Singleton):
     self.cursor.execute(sql)
     return self.cursor.fetchall()
   
-  def actualizarRegistro(self, tableName: str, updateValues: str, pk:str, datos: tuple):
+  def update(self, tableName: str, updateValues: str, pk:str, datos: tuple):
     sql = f"UPDATE {tableName} SET {updateValues} WHERE {pk} = ?"
     self.cursor.execute(sql, datos)
     self.conexion.commit()
     
-  def eliminarRegistro(self, tableName: str, datos: tuple):
+  def delete(self, tableName: str, datos: tuple):
     sql = f"DELETE FROM {tableName} WHERE id = ?"
     self.cursor.execute(sql, datos)
     self.conexion.commit()

@@ -10,6 +10,8 @@ class Socio:
   def __str__(self) -> str:
     return f"Socio: {self.id} - {self.nombre} - {self.apellido} - {self.telefono} - {self.email}"
   
+  def asTuple(self) -> tuple:
+    return (self.nombre, self.apellido, self.telefono, self.email)
   # PROPERTIES
   @property
   def id(self) -> int: return self._id

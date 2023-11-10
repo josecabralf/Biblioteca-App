@@ -13,3 +13,7 @@ class SocioDTO:
   
   def asSocio(self) -> Socio:
     return Socio(self._id, self._nombre, self._apellido, self._telefono, self._email)
+  
+  @classmethod
+  def toDTO(cls, socio: Socio) -> 'SocioDTO':
+    return SocioDTO(socio.id, socio.nombre, socio.apellido, socio.telefono, socio.email)
