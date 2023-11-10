@@ -2,7 +2,7 @@ import tkinter as tk
 from entities.Socio import Socio
 
 class PantallaCamposSocio:
-    def __init__(self, operacion: str = "C", socio: Socio = None) -> None:
+    def __init__(self, socio: Socio, operacion: str) -> None:
         self.ventana = tk.Tk()
         self.widgets = []
         self.permiso = operacion

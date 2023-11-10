@@ -4,7 +4,7 @@ from tkinter import PhotoImage
 # Asumiendo que png_socios, png_libros, etc., están definidos en config
 from config import png_reportes, png_extravios, png_libros, png_prestamos, png_socios, png_salir
 
-from boundaries.PantallasSocios.PantallaSocios import PantallaSocios
+from use_cases.admin_socios.SociosController import SociosController
 from boundaries.PantallasLibros.PantallaLibros import PantallaLibros
 from boundaries.PantallasPrestamos.PantallaPrestamos import PantallaPrestamos
 from boundaries.PantallasExtravios.PantallaExtravios import PantallaExtravios
@@ -48,7 +48,7 @@ class PantallaPrincipal(Pantalla):
 
     def socios(self):
         self.ocultarWidgets()
-        self.pantallaSocio = PantallaSocios(self.backToMain)
+        SociosController(self.backToMain)
 
     def libros(self):
         self.ocultarWidgets()
