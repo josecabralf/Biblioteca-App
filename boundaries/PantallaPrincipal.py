@@ -1,7 +1,6 @@
 from tkinter import ttk
 from tkinter import PhotoImage
 
-# Asumiendo que png_socios, png_libros, etc., están definidos en config
 from config import png_reportes, png_extravios, png_libros, png_prestamos, png_socios, png_salir
 
 from use_cases.admin_socios.SociosController import SociosController
@@ -41,8 +40,7 @@ class PantallaPrincipal(Pantalla):
     def ocultarWidgets(self):
         [widget.grid_forget() for widget in self.widgets]
 
-    def backToMain(self, pantalla):
-        pantalla.destruir()
+    def backToMain(self):
         self.ventana.title("Sistema de Biblioteca")
         self.mostrarWidgets()
 

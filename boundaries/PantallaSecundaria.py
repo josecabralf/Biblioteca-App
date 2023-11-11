@@ -4,8 +4,9 @@ from tkinter import PhotoImage
 from config import png_return
 
 class PantallaSecundaria(Pantalla):
-    def __init__(self, volver_a_principal):
+    def __init__(self, gestor, volver_a_principal):
       super().__init__()
+      self.gestor = gestor
       self.volver_a_principal = volver_a_principal
       self.widgets = []
       self.createWidgets()
@@ -21,6 +22,13 @@ class PantallaSecundaria(Pantalla):
       estilo.configure("Volver.TButton", width=10, background="#4c061d", foreground="white")
       self.img_volver = PhotoImage(file=png_return).subsample(40)
       volver_btn = ttk.Button(self.frameBtnVolver, image= self.img_volver, style="Volver.TButton",
-                              compound= "center", command=lambda: self.volver_a_principal(self))
+                              compound= "center", command=self.backToMain)
       volver_btn.grid(row=0, column=0)
       return self.frameBtnVolver
+    
+    def getGestor(self): return self.gestor
+    
+    def backToMain(self):
+      self.gestor.desuscribir(self)
+      self.destruir()
+      self.volver_a_principal()

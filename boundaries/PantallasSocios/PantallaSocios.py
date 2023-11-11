@@ -5,21 +5,26 @@ from tkinter import StringVar, PhotoImage
 from tkinter import messagebox
 from tkinter import LEFT, RIGHT, TOP, X, Y, BOTH, CENTER
 from tkinter.ttk import Treeview
-from config import png_search, png_refresh
+from config import png_search, png_refresh, png_create, png_delete, png_update, png_view
+from entities.fabricacionPura.Observer import IObserver
 
-class PantallaSocios(PantallaSecundaria):
+class PantallaSocios(PantallaSecundaria, IObserver):
     def __init__(self, gestor, backToMain):
-        super().__init__(backToMain)
-        self.gestor = gestor
+        super().__init__(gestor, backToMain)
         self.ventana.title("Socios")
         self.socios = []  # Lista para almacenar los socios cargados
         self.createWidgets()
 
+    def actualizar(self, message): 
+        self.refresh()
+        messagebox.showinfo(message=message)
+    
     def createWidgets(self):
       super().createWidgets()
       self.widgets.append(self.createBarraBusqueda())
       self.widgets.append(self.createLblSociosRegistrados())
       self.widgets.append(self.createGrillaSocios())
+      self.widgets.append(self.createBotonesAccion())
 
     def validateInput(self, *args):
       entrada_actual = self.varBusqueda.get()
@@ -30,7 +35,7 @@ class PantallaSocios(PantallaSecundaria):
     def search(self):
       id = self.varBusqueda.get() if self.varBusqueda.get() != "" else -1
       self.gestor.search(id)
-      
+            
     def refresh(self):
       self.varBusqueda.set("")
       self.gestor.search(-1)
@@ -38,6 +43,12 @@ class PantallaSocios(PantallaSecundaria):
     def setSocios(self, socios):
       self.socios = socios
       self.loadTable()
+      
+    def loadTable(self):
+        self.treeview.delete(*self.treeview.get_children())  # Limpiar la grilla
+        for socio in self.socios:
+            self.treeview.insert("", "end", 
+                                 values=(socio.id, socio.nombre, socio.apellido, socio.telefono, socio.email))
     
     def createBarraBusqueda(self):
         self.frameBusqueda = Frame(self.ventana, bg="#4c061d")
@@ -91,39 +102,43 @@ class PantallaSocios(PantallaSecundaria):
         self.treeview.bind("<ButtonRelease-1>", self.seleccionar_fila)
         return self.frame_grilla
 
-    def create_botones_accion(self):
-        frame_botones = Frame(self.ventana, bg="#4c061d")
-        frame_botones.grid(row=3, column=1, pady=(0, 10))
+    def createBotonesAccion(self):
+        self.frameBotones = Frame(self.ventana, bg="#4c061d")
+        self.frameBotones.grid(row=4, column=0, pady=(0, 10))
+        
+        self.imgCreate = PhotoImage(file=png_create).subsample(15)
+        self.imgUpdate = PhotoImage(file=png_update).subsample(15)
+        self.imgView = PhotoImage(file=png_view).subsample(15)
+        self.imgDelete = PhotoImage(file=png_delete).subsample(15)
+        
+        btnCrear = ttk.Button(self.frameBotones, text="Crear", command=self.create, 
+                              style="Botones.TButton", image=self.imgCreate, compound="left")
+        btnModificar = ttk.Button(self.frameBotones, text="Modificar", command=self.update, 
+                                  style="Botones.TButton", image=self.imgUpdate, compound="left")
+        btnConsultar = ttk.Button(self.frameBotones, text="Consultar", command=self.read, 
+                                  style="Botones.TButton", image=self.imgView, compound="left")
+        btnBorrar = ttk.Button(self.frameBotones, text="Borrar", command=self.delete, 
+                               style="Botones.TButton", image=self.imgDelete, compound="left")
 
-        btn_crear = ttk.Button(frame_botones, text="Crear", command=self.crear_socio, style="Botones.TButton")
-        btn_modificar = ttk.Button(frame_botones, text="Modificar", command=self.modificar_socio, style="Botones.TButton")
-        btn_consultar = ttk.Button(frame_botones, text="Consultar", command=self.consultar_socio, style="Botones.TButton")
-        btn_borrar = ttk.Button(frame_botones, text="Borrar", command=self.borrar_socio, style="Botones.TButton")
-
-        btn_crear.pack(side=LEFT, padx=5)
-        btn_modificar.pack(side=LEFT, padx=5)
-        btn_consultar.pack(side=LEFT, padx=5)
-        btn_borrar.pack(side=LEFT, padx=5)
-
-    def loadTable(self):
-        self.treeview.delete(*self.treeview.get_children())  # Limpiar la grilla
-        for socio in self.socios:
-            self.treeview.insert("", "end", 
-                                 values=(socio.id, socio.nombre, socio.apellido, socio.telefono, socio.email))
+        btnCrear.pack(side=LEFT, padx=5)
+        btnModificar.pack(side=LEFT, padx=5)
+        btnConsultar.pack(side=LEFT, padx=5)
+        btnBorrar.pack(side=LEFT, padx=5)
+        return self.frameBotones
 
     def seleccionar_fila(self, event):
         seleccion = self.treeview.selection()
         if seleccion:
             pass
 
-    def crear_socio(self):
+    def create(self):
         pass
 
-    def modificar_socio(self):
+    def read(self):
         pass
 
-    def consultar_socio(self):
+    def update(self):
         pass
 
-    def borrar_socio(self):
+    def delete(self):
         pass
