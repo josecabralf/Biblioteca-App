@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from boundaries.PantallasPrestamos.PantallaPrestamos import PantallaPrestamos
 from boundaries.PantallasPrestamos.PantallaRegistrarDevolucion import PantallaRegistrarDevolucion
 from boundaries.PantallasPrestamos.PantallaRegistrarPrestamo import PantallaRegistrarPrestamo
@@ -13,6 +15,8 @@ from persistence.daos.implementations.SocioDAO import SocioDAOImplSQL
 from persistence.BDHelper import BDHelper
 from persistence.dtos.PrestamoDTO import PrestamoDTO
 from persistence.dtos.LibroDTO import LibroDTO
+
+from entities.Prestamo import Prestamo
 
 class PrestamosController:
   def __init__(self, backToMain, dao: IPrestamoDAO = PrestamoDAOImplSQL(), libroDao: ILibroDAO = LibroDAOImplSQL(),
@@ -53,21 +57,23 @@ class PrestamosController:
   
   def desbloquearPantalla(self): 
     self.pantalla.desbloquear()
-    self.idSocio = None
+    self.idPrestamo = None
   def bloquearPantalla(self): self.pantalla.bloquear()
   
-  def devolver(self, id: int, prestamo: PrestamoDTO):
-    prestamo.id = id
-    libro = self.libroDao.fetchById(prestamo.libro).asLibro()
+  def devolver(self):
+    prestamo: Prestamo = self.prestamos[self.idPrestamo]
+    prestamo.setFechaFin(datetime.now())
+    libro = prestamo.getLibro()
     libro.devolver()
-    self.libroDao.update(LibroDTO.fromLibro(libro))
+    self.libroDao.update(libro)
     self.dao.update(prestamo)
+    self.idPrestamo = None
   
   def openPrestamoWindow(self):
     self.bloquearPantalla()
-    PantallaRegistrarDevolucion(self)
+    PantallaRegistrarPrestamo(self)
     
   def openDevolucionWindow(self, data: tuple):
     self.bloquearPantalla()
-    self.idPrestamo = data[0]
-    PantallaRegistrarPrestamo(self, data[1:])
+    self.idPrestamo = int(data[0])
+    PantallaRegistrarDevolucion(self, data[1:])

@@ -23,7 +23,7 @@ class PrestamoDTO:
   
   @classmethod
   def toDTO(cls, prestamo: Prestamo):
-    return cls(prestamo.getId(), prestamo.getLibro().getId(), prestamo.getSocio().getId(), 
+    return cls(prestamo.getId(), prestamo.getLibro().getCodigo(), prestamo.getSocio().getId(), 
                prestamo.getFechaIni(), prestamo.getDias(), prestamo.getFechaFin())
     
   def getLibro(self): return self.libro

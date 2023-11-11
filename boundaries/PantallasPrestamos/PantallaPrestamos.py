@@ -16,7 +16,11 @@ class PantallaPrestamos(PantallaSecundaria, IObserver):
       self.prestamos = []
       self.fila_seleccionada = None
       self.createWidgets()
-      
+    
+    def actualizar(self, message):
+      self.refresh()
+      messagebox.showinfo(message=message)
+    
     def createWidgets(self):
       super().createWidgets()
       self.widgets.append(self.createBarraBusqueda())
