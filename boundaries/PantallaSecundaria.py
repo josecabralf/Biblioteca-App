@@ -22,13 +22,10 @@ class PantallaSecundaria(Pantalla):
       estilo.configure("Volver.TButton", width=10, background="#4c061d", foreground="white")
       self.img_volver = PhotoImage(file=png_return).subsample(40)
       volver_btn = ttk.Button(self.frameBtnVolver, image= self.img_volver, style="Volver.TButton",
-                              compound= "center", command=self.backToMain)
+                              compound= "center", command=self.gestor.volver)
       volver_btn.grid(row=0, column=0)
       return self.frameBtnVolver
     
     def getGestor(self): return self.gestor
     
-    def backToMain(self):
-      self.gestor.desuscribir(self)
-      self.destruir()
-      self.volver_a_principal()
+    def volver(self): self.volver_a_principal()

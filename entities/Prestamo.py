@@ -21,6 +21,10 @@ class Prestamo:
     if self.haFinalizado(): string += f"Finalizado: {self.fecha_fin}\n"
     return string
   
+  def asTuple(self):
+    return (self.libro.getTitulo(), f"{self.socio.getNombre()} {self.socio.getApellido()}", 
+            self.fecha_ini, self.dias, self.fecha_fin)
+  
   # PROPERTIES
   @property
   def id(self) -> int: return self._id
@@ -72,7 +76,7 @@ class Prestamo:
   def setFechaFin(self, fecha_fin: datetime) -> None: self.fecha_fin = fecha_fin
   
   # COMPORTAMIENTO
-  def haFinalizado(self) -> bool: return self.fecha_fin is not None
+  def estaVigente(self) -> bool: return self.fecha_fin is None
   
   def estaDemorado(self) -> bool:
     if self.haFinalizado(): return False

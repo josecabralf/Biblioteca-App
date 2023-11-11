@@ -29,3 +29,12 @@ class LibroDTO:
         if estadoLibro == libro.getEstado(): estado = idEstado
     return LibroDTO(libro.codigo, libro.titulo, libro.precio, estado)
   
+  @classmethod
+  def obtener_clave_por_valor(cls, estado):
+    for clave, valor in cls.dictEstados.items():
+        if valor == estado: return clave
+    return None
+  
+  @classmethod
+  def fromLibro(cls, libro: Libro) -> 'LibroDTO':
+    return LibroDTO(libro.codigo, libro.titulo, libro.precio, cls.obtener_clave_por_valor(libro.estado))

@@ -20,6 +20,9 @@ class PantallaLibros(PantallaSecundaria, IObserver):
         self.refresh()
         messagebox.showinfo(message=message)
     
+    def showErrorMessage(self, message): 
+        messagebox.showerror(message=message)
+    
     def bloquear(self):
         for c in self.frameBotones.winfo_children(): c.config(state="disabled")
         for c in self.frameBtnVolver.winfo_children(): c.config(state="disabled")
@@ -56,7 +59,7 @@ class PantallaLibros(PantallaSecundaria, IObserver):
     def loadTable(self):
         self.treeview.delete(*self.treeview.get_children())  # Limpiar la grilla
         for libro in self.libros:
-            self.treeview.insert("", "end", values=(libro.getCodigo(),)+ libro.asTuple())
+            self.treeview.insert("", "end", values=libro)
 
     def getRowValues(self, event):
         seleccion = self.treeview.selection()

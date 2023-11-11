@@ -1,5 +1,6 @@
 from persistence.daos.interfaces.ILibroDAO import ILibroDAO
 from persistence.dtos.LibroDTO import LibroDTO
+from entities.Libro import Libro
 from persistence.BDHelper import BDHelper
 from persistence.RegistroNoEncontrado import RegistroNoEncontradoError
 
@@ -10,25 +11,26 @@ class LibroDAOImplSQL(ILibroDAO):
   values = "(?, ?, ?)"
   pk = "codigo_lib"
   
-  def create(self, libro: LibroDTO):
-    datos = libro.asTuple()
+  def create(self, libro: Libro):
+    libroDTO = LibroDTO.fromLibro(libro)
+    datos = libroDTO.asTuple()
     BDHelper().create(self.tableName, self.columnas, self.values, datos)
     
-  def fetchById(self, id: int) -> LibroDTO:
+  def fetchById(self, id: int) -> Libro:
     libro = BDHelper().fetchById(self.tableName, self.pk, (id,))
     if not libro: raise RegistroNoEncontradoError(f"No se encontró el libro con id {id}")
-    return LibroDTO(libro[0][0], libro[0][1], libro[0][2], libro[0][3])
+    libroDTO = LibroDTO(libro[0][0], libro[0][1], libro[0][2], libro[0][3])
+    return libroDTO.asLibro()
   
   def fetchAll(self) -> list:
-    libros = BDHelper().fetchAll(self.tableName)
-    librosDTO = []
-    for libro in libros: 
-      librosDTO.append(LibroDTO(libro[0], libro[1], libro[2], libro[3]))
-    return librosDTO
+    librosDTO = BDHelper().fetchAll(self.tableName)
+    libros = [LibroDTO(libro[0], libro[1], libro[2], libro[3]).asLibro() for libro in librosDTO]
+    return libros
   
-  def update(self, libro: LibroDTO):
-    self.fetchById(libro.getId())
-    datos = libro.asTuple() + (libro.getId(),)
+  def update(self, libro: Libro):
+    self.fetchById(libro.getCodigo())
+    libroDTO = LibroDTO.fromLibro(libro)
+    datos = libroDTO.asTuple() + (libroDTO.getId(),)
     BDHelper().update(self.tableName, self.updateValues, self.pk, datos)
     
   def delete(self, id: int):

@@ -15,8 +15,8 @@ class LibrosController:
     self.loadLibros()
     
   def loadLibros(self):
-    Libros = self.dao.fetchAll()
-    self.pantalla.setLibros([s.asLibro() for s in Libros])
+    self.libros = self.dao.fetchAll()
+    self.pantalla.setLibros([(l.getCodigo(),)+l.asTuple() for l in self.libros])
     
   def search(self, id: int):
     if id == -1: 
@@ -26,7 +26,7 @@ class LibrosController:
     except RegistroNoEncontradoError:
       self.pantalla.setLibros([])
       return
-    self.pantalla.setLibros([libro.asLibro()])
+    self.pantalla.setLibros([(libro.getCodigo(),) + libro.asTuple()])
     
   def desuscribir(self, observer): BDHelper().desuscribir(observer)
   
@@ -35,15 +35,26 @@ class LibrosController:
     self.idLibro = None
   def bloquearPantalla(self): self.pantalla.bloquear()
   
-  def create(self, libro: LibroDTO):
+  def volver(self):
+    self.desuscribir(self.pantalla)
+    self.pantalla.destruir()
+    self.pantalla.volver()
+  
+  def create(self, libroDTO: LibroDTO): 
+    libro = libroDTO.asLibro()
     self.dao.create(libro)
   
-  def update(self, libro: LibroDTO):
+  def update(self, libroDTO: LibroDTO):
+    libro = libroDTO.asLibro()
     libro._codigo = self.idLibro
     self.dao.update(libro)
     self.idLibro = None
     
   def delete(self):
+    l = self.dao.fetchById(self.idLibro)
+    if l.estaPrestado():
+      self.pantalla.showErrorMessage("No se puede eliminar un libro que está prestado")
+      return
     self.dao.delete(self.idLibro)
     self.idLibro = None
     

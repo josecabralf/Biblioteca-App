@@ -5,6 +5,7 @@ class Socio:
     self._apellido = apellido
     self._telefono = telefono
     self._email = email
+    self._prestamos = []
   
   def __str__(self) -> str:
     return f"Socio: {self.id} - {self.nombre} - {self.apellido} - {self.telefono} - {self.email}"
@@ -60,3 +61,7 @@ class Socio:
   
   def getPrestamos(self) -> list: return self.prestamos
   def setPrestamos(self, prestamos: list) -> None: self.prestamos = prestamos
+  
+  # METODOS
+  def tienePrestamosVigentes(self) -> bool:
+    return any([p.estaVigente() for p in self.prestamos])

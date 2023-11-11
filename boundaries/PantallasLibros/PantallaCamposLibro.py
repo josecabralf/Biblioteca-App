@@ -48,7 +48,7 @@ class PantallaCamposLibro:
             campo.grid(row=i, column=1, padx=10, pady=10)
             self.entries.append(campo)
             if self.permiso == "R" or self.permiso == "D": campo.config(state=tk.DISABLED)
-        self.crearCmbEstado()
+        self.crearCmbEstado(None if not libro else libro[2])
         validate_cmd = (self.ventana.register(self.validar_flotante), '%P')
         self.entries[1].config(validate='key', validatecommand=validate_cmd)
         
@@ -71,15 +71,21 @@ class PantallaCamposLibro:
         boton = tk.Button(self.ventana, text=nombre, command=comando)
         return boton
 
-    def crearCmbEstado(self):
+    def crearCmbEstado(self, estado: str = None):
         lblEstado = tk.Label(self.entriesFrame, text="Estado", background="#4c061d", foreground="white")
         lblEstado.grid(row=len(self.campos), column=0, padx=10, pady=10)
         self.cmbEstado = ttk.Combobox(self.entriesFrame, values=list(self.estados.keys()))
         self.cmbEstado.set(list(self.estados.keys())[0])
-        self.cmbValue = self.estados[list(self.estados.keys())[0]]
+        
+        if estado is not None and estado in self.estados.keys(): self.cmbEstado.set(estado)
+        else: self.cmbEstado.set(list(self.estados.keys())[0])
+        self.cmbValue = self.estados[self.cmbEstado.get()]
+            
         self.cmbEstado.grid(row=len(self.campos), column=1, padx=10, pady=10)
         self.cmbEstado.bind("<<ComboboxSelected>>", self.seleccionar_opcion)
-        if self.permiso != "U": self.cmbEstado.config(state=tk.DISABLED)
+        self.cmbEstado.config(state=tk.DISABLED) 
+        # En todo caso se bloquea para evitar estado inconsistente en la BD: 
+        # Ej. Libro prestado pero disponible en la pantalla o viceversa
 
     def mostrarWidgets(self):
         for widget in self.widgets: widget.pack()
@@ -97,11 +103,9 @@ class PantallaCamposLibro:
             try:
                 if nuevo_valor == "" or float(nuevo_valor):return True
                 else: return False
-            except ValueError:
-                return False
+            except ValueError: return False
 
-    def getValues(self):
-        return LibroDTO(0, self.entries[0].get(), self.entries[1].get(), self.cmbValue)
+    def getValues(self): return LibroDTO(0, self.entries[0].get(), self.entries[1].get(), self.cmbValue)
 
     def aceptar(self):
         if not self.validarContenidoEntries():messagebox.showerror("Error", "Debe completar todos los campos")

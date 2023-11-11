@@ -53,5 +53,5 @@ class Libro:
   def extraviar(self): self.estado.extraviar(self)
   
   def estaDisponible(self) -> bool: return self.estado.esDisponible()
+  def estaPrestado(self) -> bool: return self.estado.esPrestado()
   def estaExtraviado(self) -> bool: return self.estado.esExtraviado()
-  def estaPerdido(self) -> bool: return self.estado.esPerdido()

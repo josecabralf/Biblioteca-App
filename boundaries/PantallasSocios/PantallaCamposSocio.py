@@ -4,7 +4,7 @@ from tkinter import ttk, PhotoImage, messagebox
 from config import png_aceptar, png_cancelar
 
 class PantallaCamposSocio:
-    campos = ["Nombre", "Apellido", "Email", "Telefono"]
+    campos = ["Nombre", "Apellido", "Telefono", "Email"]
     def __init__(self, gestor, socio: tuple, operacion: str) -> None:
         self.ventana = tk.Toplevel()
         self.gestor = gestor

@@ -19,6 +19,8 @@ class PantallaSocios(PantallaSecundaria, IObserver):
     def actualizar(self, message): 
         self.refresh()
         messagebox.showinfo(message=message)
+        
+    def showErrorMessage(self, message): messagebox.showerror(message=message)
     
     def bloquear(self):
         for c in self.frameBotones.winfo_children(): c.config(state="disabled")
@@ -56,7 +58,7 @@ class PantallaSocios(PantallaSecundaria, IObserver):
     def loadTable(self):
         self.treeview.delete(*self.treeview.get_children())  # Limpiar la grilla
         for socio in self.socios:
-            self.treeview.insert("", "end", values=(socio.getId(),)+ socio.asTuple())
+            self.treeview.insert("", "end", values=socio)
 
     def getRowValues(self, event):
         seleccion = self.treeview.selection()
@@ -68,20 +70,16 @@ class PantallaSocios(PantallaSecundaria, IObserver):
             return False
         return True
     
-    def create(self):
-        self.gestor.openCreateWindow()
+    def create(self):self.gestor.openCreateWindow()
 
     def read(self):
-        if self.validarFilaSeleccionada():
-            self.gestor.openReadWindow(self.fila_seleccionada)
+        if self.validarFilaSeleccionada(): self.gestor.openReadWindow(self.fila_seleccionada)
 
     def update(self):
-        if self.validarFilaSeleccionada():
-            self.gestor.openUpdateWindow(self.fila_seleccionada)
+        if self.validarFilaSeleccionada(): self.gestor.openUpdateWindow(self.fila_seleccionada)
 
     def delete(self):
-        if self.validarFilaSeleccionada():
-            self.gestor.openDeleteWindow(self.fila_seleccionada)
+        if self.validarFilaSeleccionada(): self.gestor.openDeleteWindow(self.fila_seleccionada)
         
     def createBotonesAccion(self):
         self.frameBotones = Frame(self.ventana, bg="#4c061d")

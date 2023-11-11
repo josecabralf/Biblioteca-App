@@ -39,6 +39,11 @@ class BDHelper(Singleton, ISubject):
     self.conexion.commit()
     self.notificar(f"{tableName}: registro eliminado exitosamente")
     
+  def fetchByColumn(self, tableName: str, column: str, datos: tuple) -> list:
+    sql = f"SELECT * FROM {tableName} WHERE {column} = ?"
+    self.cursor.execute(sql, datos)
+    return self.cursor.fetchall()
+    
   def suscribir(self, observer: IObserver): self.observers.append(observer)
     
   def desuscribir(self, observer: IObserver): self.observers.remove(observer)

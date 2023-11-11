@@ -1,22 +1,28 @@
 from boundaries.PantallasSocios.PantallaSocios import PantallaSocios
 from boundaries.PantallasSocios.PantallaCamposSocio import PantallaCamposSocio
 from persistence.RegistroNoEncontrado import RegistroNoEncontradoError
+
 from persistence.daos.interfaces.ISocioDAO import ISocioDAO
 from persistence.daos.implementations.SocioDAO import SocioDAOImplSQL
+from persistence.daos.interfaces.IPrestamoDAO import IPrestamoDAO
+from persistence.daos.implementations.PrestamoDAO import PrestamoDAOImplSQL
+
 from persistence.BDHelper import BDHelper
 from persistence.dtos.SocioDTO import SocioDTO
 from entities.Socio import Socio
 
 class SociosController:
-  def __init__(self, backToMain, dao: ISocioDAO = SocioDAOImplSQL()) -> None:
+  def __init__(self, backToMain, dao: ISocioDAO = SocioDAOImplSQL(), 
+               prestamoDao: IPrestamoDAO = PrestamoDAOImplSQL()) -> None:
     self.pantalla = PantallaSocios(self, backToMain)
     BDHelper().suscribir(self.pantalla)
     self.dao = dao
+    self.prestamoDao = prestamoDao
     self.loadSocios()
     
   def loadSocios(self):
-    socios = self.dao.fetchAll()
-    self.pantalla.setSocios([s.asSocio() for s in socios])
+    self.socios = self.dao.fetchAll()
+    self.pantalla.setSocios([(s.getId(),) + s.asTuple() for s in self.socios])
     
   def search(self, id: int):
     if id == -1: 
@@ -26,7 +32,7 @@ class SociosController:
     except RegistroNoEncontradoError:
       self.pantalla.setSocios([])
       return
-    self.pantalla.setSocios([socio.asSocio()])
+    self.pantalla.setSocios([(socio.getId(),) + socio.asTuple()])
     
   def desuscribir(self, observer): BDHelper().desuscribir(observer)
   
@@ -35,17 +41,26 @@ class SociosController:
     self.idSocio = None
   def bloquearPantalla(self): self.pantalla.bloquear()
   
-  def create(self, socio: Socio):
-    socioDTO = SocioDTO.fromSocio(socio)
-    self.dao.create(socioDTO)
+  def volver(self):
+    self.desuscribir(self.pantalla)
+    self.pantalla.destruir()
+    self.pantalla.volver()
+  
+  def create(self, socio: Socio): self.dao.create(socio)
   
   def update(self, socio: Socio):
-    socioDTO = SocioDTO.fromSocio(socio)
-    socioDTO._id = self.idSocio
-    self.dao.update(socioDTO)
+    socio._id = self.idSocio
+    self.dao.update(socio)
     self.idSocio = None
     
   def delete(self):
+    prestamos = self.prestamoDao.fetchBySocio(self.idSocio)
+    if prestamos:
+      socio = prestamos[0].getSocio()
+      socio.setPrestamos(prestamos)
+      if socio.tienePrestamosVigentes():
+        self.pantalla.mostrarError("El socio tiene prestamos vigentes")
+        return
     self.dao.delete(self.idSocio)
     self.idSocio = None
     
