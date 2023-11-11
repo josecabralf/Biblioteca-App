@@ -12,7 +12,8 @@ class PantallaSocios(PantallaSecundaria, IObserver):
     def __init__(self, gestor, backToMain):
         super().__init__(gestor, backToMain)
         self.ventana.title("Socios")
-        self.socios = []  # Lista para almacenar los socios cargados
+        self.socios = []
+        self.fila_seleccionada = None
         self.createWidgets()
 
     def actualizar(self, message): 
@@ -56,6 +57,56 @@ class PantallaSocios(PantallaSecundaria, IObserver):
         self.treeview.delete(*self.treeview.get_children())  # Limpiar la grilla
         for socio in self.socios:
             self.treeview.insert("", "end", values=(socio.getId(),)+ socio.asTuple())
+
+    def getRowValues(self, event):
+        seleccion = self.treeview.selection()
+        if seleccion: self.fila_seleccionada = self.treeview.item(seleccion[0], "values")
+
+    def validarFilaSeleccionada(self):
+        if self.fila_seleccionada == None:
+            messagebox.showwarning("Advertencia", "Debe seleccionar un socio")
+            return False
+        return True
+    
+    def create(self):
+        self.gestor.openCreateWindow()
+
+    def read(self):
+        if self.validarFilaSeleccionada():
+            self.gestor.openReadWindow(self.fila_seleccionada)
+
+    def update(self):
+        if self.validarFilaSeleccionada():
+            self.gestor.openUpdateWindow(self.fila_seleccionada)
+
+    def delete(self):
+        if self.validarFilaSeleccionada():
+            self.gestor.openDeleteWindow(self.fila_seleccionada)
+        
+    def createBotonesAccion(self):
+        self.frameBotones = Frame(self.ventana, bg="#4c061d")
+        self.frameBotones.grid(row=4, column=0, pady=(0, 10))
+        
+        self.imgCreate = PhotoImage(file=png_create).subsample(15)
+        self.imgUpdate = PhotoImage(file=png_update).subsample(15)
+        self.imgView = PhotoImage(file=png_view).subsample(15)
+        self.imgDelete = PhotoImage(file=png_delete).subsample(15)
+        
+        btnCrear = ttk.Button(self.frameBotones, text="Crear", command=self.create, 
+                              style="Botones.TButton", image=self.imgCreate, compound="left")
+        btnModificar = ttk.Button(self.frameBotones, text="Modificar", command=self.update, 
+                                  style="Botones.TButton", image=self.imgUpdate, compound="left")
+        btnConsultar = ttk.Button(self.frameBotones, text="Consultar", command=self.read, 
+                                  style="Botones.TButton", image=self.imgView, compound="left")
+        btnBorrar = ttk.Button(self.frameBotones, text="Borrar", command=self.delete, 
+                               style="Botones.TButton", image=self.imgDelete, compound="left")
+
+        btnCrear.pack(side=LEFT, padx=5)
+        btnModificar.pack(side=LEFT, padx=5)
+        btnConsultar.pack(side=LEFT, padx=5)
+        btnBorrar.pack(side=LEFT, padx=5)
+        return self.frameBotones
+
     
     def createBarraBusqueda(self):
         self.frameBusqueda = Frame(self.ventana, bg="#4c061d")
@@ -107,44 +158,3 @@ class PantallaSocios(PantallaSecundaria, IObserver):
         self.treeview.pack(fill=BOTH, expand=True)
         self.treeview.bind("<ButtonRelease-1>", self.getRowValues)
         return self.frame_grilla
-
-    def getRowValues(self, event):
-        seleccion = self.treeview.selection()
-        if seleccion:
-            self.fila_seleccionada = self.treeview.item(seleccion[0], "values")
-
-    def createBotonesAccion(self):
-        self.frameBotones = Frame(self.ventana, bg="#4c061d")
-        self.frameBotones.grid(row=4, column=0, pady=(0, 10))
-        
-        self.imgCreate = PhotoImage(file=png_create).subsample(15)
-        self.imgUpdate = PhotoImage(file=png_update).subsample(15)
-        self.imgView = PhotoImage(file=png_view).subsample(15)
-        self.imgDelete = PhotoImage(file=png_delete).subsample(15)
-        
-        btnCrear = ttk.Button(self.frameBotones, text="Crear", command=self.create, 
-                              style="Botones.TButton", image=self.imgCreate, compound="left")
-        btnModificar = ttk.Button(self.frameBotones, text="Modificar", command=self.update, 
-                                  style="Botones.TButton", image=self.imgUpdate, compound="left")
-        btnConsultar = ttk.Button(self.frameBotones, text="Consultar", command=self.read, 
-                                  style="Botones.TButton", image=self.imgView, compound="left")
-        btnBorrar = ttk.Button(self.frameBotones, text="Borrar", command=self.delete, 
-                               style="Botones.TButton", image=self.imgDelete, compound="left")
-
-        btnCrear.pack(side=LEFT, padx=5)
-        btnModificar.pack(side=LEFT, padx=5)
-        btnConsultar.pack(side=LEFT, padx=5)
-        btnBorrar.pack(side=LEFT, padx=5)
-        return self.frameBotones
-
-    def create(self):
-        self.gestor.openCreateWindow()
-
-    def read(self):
-        self.gestor.openReadWindow(self.fila_seleccionada)
-
-    def update(self):
-        pass
-
-    def delete(self):
-        pass

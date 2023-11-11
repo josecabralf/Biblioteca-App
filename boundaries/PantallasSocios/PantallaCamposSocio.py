@@ -1,6 +1,6 @@
 import tkinter as tk
 from entities.Socio import Socio
-from tkinter import ttk, PhotoImage
+from tkinter import ttk, PhotoImage, messagebox
 from config import png_aceptar, png_cancelar
 
 class PantallaCamposSocio:
@@ -65,10 +65,16 @@ class PantallaCamposSocio:
     def mostrarWidgets(self):
         for widget in self.widgets: widget.pack()
 
+    def validarContenidoEntries(self):
+        for entry in self.entries:
+            if entry.get() == "": return False
+        return True
+
     def getValues(self):
-        return Socio(0, self.entries[0].get(), self.entries[1].get(), self.entries[3].get(), self.entries[2].get())
+        return Socio(0, self.entries[0].get(), self.entries[1].get(), self.entries[2].get(), self.entries[3].get())
 
     def aceptar(self):
+        if not self.validarContenidoEntries():messagebox.showerror("Error", "Debe completar todos los campos")
         if self.permiso == "C": self.gestor.create(self.getValues())
         elif self.permiso == "U": self.gestor.update(self.getValues())
         elif self.permiso == "D": self.gestor.delete()

@@ -59,10 +59,10 @@ class SociosController:
   
   def openUpdateWindow(self, data: tuple):
     self.bloquearPantalla()
-    self.idSocio = data[1]
+    self.idSocio = data[0]
     PantallaCamposSocio(self, data[1:], "U")
     
   def openDeleteWindow(self, data: tuple):
     self.bloquearPantalla()
-    self.idSocio = data[1]
+    self.idSocio = data[0]
     PantallaCamposSocio(self, data[1:], "D")
