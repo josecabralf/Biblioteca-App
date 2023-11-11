@@ -13,17 +13,14 @@ class Prestamo:
     self._fecha_fin = fecha_fin
   
   def __str__(self) -> str:
-    string =  f"Prestamo: {self.id} \n \
-              {self.libro}\n \
-              {self.socio}\n \
-              Desde: {self.fecha_ini}\n \
-              Días Solicitado: {self.dias}\n"
-    if self.haFinalizado(): string += f"Finalizado: {self.fecha_fin}\n"
+    string =  f"Prestamo: {self.id} \n{self.libro}\n{self.socio}\nDesde: {self.fecha_ini}\nDías Solicitado: {self.dias}\n"
+    if not self.estaVigente(): string += f"Finalizado: {self.fecha_fin}\n"
     return string
   
   def asTuple(self):
+    fecha_fin = self.fecha_fin if self.fecha_fin is not None else ""
     return (self.libro.getTitulo(), f"{self.socio.getNombre()} {self.socio.getApellido()}", 
-            self.fecha_ini, self.dias, self.fecha_fin)
+            self.fecha_ini, self.dias, fecha_fin)
   
   # PROPERTIES
   @property
@@ -79,7 +76,7 @@ class Prestamo:
   def estaVigente(self) -> bool: return self.fecha_fin is None
   
   def estaDemorado(self) -> bool:
-    if self.haFinalizado(): return False
+    if not self.estaVigente(): return False
     return (datetime.now() - self.fecha_ini).days > self.dias
   
   def finalizar(self) -> None: self.fecha_fin = datetime.now()

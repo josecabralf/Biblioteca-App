@@ -24,11 +24,8 @@ class PrestamoDAOImplSQL(IPrestamoDAO):
   def fetchById(self, id: int) -> Prestamo:
     prestamo = BDHelper().fetchById(self.tableName, self.pk, (id,))
     if not prestamo: raise RegistroNoEncontradoError(f"No se encontró el prestamo con id {id}")
-    prestamoDTO = PrestamoDTO(
-      prestamo[0][0], prestamo[0][1], prestamo[0][2], prestamo[0][3], prestamo[0][4], prestamo[0][5])
-    libro = LibroDAOImplSQL().fetchById(prestamoDTO.getCodigoLibro())
-    socio = SocioDAOImplSQL().fetchById(prestamoDTO.getIdSocio())
-    return prestamoDTO.asPrestamo(libro, socio)
+    prestamo = self.fromResultsToPrestamo(prestamo)[0]
+    return prestamo
   
   def fetchAll(self) -> list:
     res = BDHelper().fetchAll(self.tableName)

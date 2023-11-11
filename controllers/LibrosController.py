@@ -5,7 +5,6 @@ from persistence.daos.interfaces.ILibroDAO import ILibroDAO
 from persistence.daos.implementations.LibroDAO import LibroDAOImplSQL
 from persistence.BDHelper import BDHelper
 from persistence.dtos.LibroDTO import LibroDTO
-from entities.Libro import Libro
 
 class LibrosController:
   def __init__(self, backToMain, dao: ILibroDAO = LibroDAOImplSQL()) -> None:
@@ -15,15 +14,16 @@ class LibrosController:
     self.loadLibros()
     
   def loadLibros(self):
-    self.libros = self.dao.fetchAll()
-    self.pantalla.setLibros([(l.getCodigo(),)+l.asTuple() for l in self.libros])
+    self.libros = dict()
+    for l in self.dao.fetchAll(): self.libros[l.getCodigo()] = l
+    self.pantalla.setLibros([(l.getCodigo(),)+l.asTuple() for l in self.libros.values()])
     
   def search(self, id: int):
     if id == -1: 
       self.loadLibros()
       return
-    try: libro = self.dao.fetchById(id)
-    except RegistroNoEncontradoError:
+    try: libro = self.libros[id]
+    except:
       self.pantalla.setLibros([])
       return
     self.pantalla.setLibros([(libro.getCodigo(),) + libro.asTuple()])
@@ -51,7 +51,7 @@ class LibrosController:
     self.idLibro = None
     
   def delete(self):
-    l = self.dao.fetchById(self.idLibro)
+    l = self.libros[self.idLibro]
     if l.estaPrestado():
       self.pantalla.showErrorMessage("No se puede eliminar un libro que está prestado")
       return
@@ -68,10 +68,10 @@ class LibrosController:
   
   def openUpdateWindow(self, data: tuple):
     self.bloquearPantalla()
-    self.idLibro = data[0]
+    self.idLibro = int(data[0])
     PantallaCamposLibro(self, data[1:], "U")
     
   def openDeleteWindow(self, data: tuple):
     self.bloquearPantalla()
-    self.idLibro = data[0]
+    self.idLibro = int(data[0])
     PantallaCamposLibro(self, data[1:], "D")

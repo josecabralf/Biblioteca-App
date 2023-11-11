@@ -21,15 +21,16 @@ class SociosController:
     self.loadSocios()
     
   def loadSocios(self):
-    self.socios = self.dao.fetchAll()
-    self.pantalla.setSocios([(s.getId(),) + s.asTuple() for s in self.socios])
+    self.socios = dict()
+    for s in self.dao.fetchAll(): self.socios[s.getId()] = s
+    self.pantalla.setSocios([(s.getId(),) + s.asTuple() for s in self.socios.values()])
     
   def search(self, id: int):
     if id == -1: 
       self.loadSocios()
       return
-    try: socio = self.dao.fetchById(id)
-    except RegistroNoEncontradoError:
+    try: socio = self.socios[id]
+    except:
       self.pantalla.setSocios([])
       return
     self.pantalla.setSocios([(socio.getId(),) + socio.asTuple()])
@@ -56,7 +57,7 @@ class SociosController:
   def delete(self):
     prestamos = self.prestamoDao.fetchBySocio(self.idSocio)
     if prestamos:
-      socio = prestamos[0].getSocio()
+      socio = self.socios[self.idSocio]
       socio.setPrestamos(prestamos)
       if socio.tienePrestamosVigentes():
         self.pantalla.showErrorMessage(f"No se puede eliminar socio: tiene prestamos sin devolver")
@@ -74,10 +75,10 @@ class SociosController:
   
   def openUpdateWindow(self, data: tuple):
     self.bloquearPantalla()
-    self.idSocio = data[0]
+    self.idSocio = int(data[0])
     PantallaCamposSocio(self, data[1:], "U")
     
   def openDeleteWindow(self, data: tuple):
     self.bloquearPantalla()
-    self.idSocio = data[0]
+    self.idSocio = int(data[0])
     PantallaCamposSocio(self, data[1:], "D")

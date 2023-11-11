@@ -25,6 +25,8 @@ png_delete = "./resources/icons/delete.png"
 png_update = "./resources/icons/update.png"
 png_view = "./resources/icons/view.png"
 
+png_devolucion = "./resources/icons/devolucion.png"
+
 #====================================================================================================================
 #====================================================================================================================
 # TERCIARIAS
