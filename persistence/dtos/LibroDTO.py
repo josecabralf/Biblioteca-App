@@ -28,4 +28,4 @@ class LibroDTO:
     for idEstado, estadoLibro in LibroDTO.dictEstados.items():
         if estadoLibro == libro.getEstado(): estado = idEstado
     return LibroDTO(libro.codigo, libro.titulo, libro.precio, estado)
-      
+  

@@ -35,14 +35,12 @@ class LibrosController:
     self.idLibro = None
   def bloquearPantalla(self): self.pantalla.bloquear()
   
-  def create(self, libro: Libro):
-    libroDTO = LibroDTO.fromLibro(libro)
-    self.dao.create(libroDTO)
+  def create(self, libro: LibroDTO):
+    self.dao.create(libro)
   
-  def update(self, libro: Libro):
-    libroDTO : LibroDTO = LibroDTO.fromLibro(libro)
-    libroDTO._codigo = self.idLibro
-    self.dao.update(libroDTO)
+  def update(self, libro: LibroDTO):
+    libro._codigo = self.idLibro
+    self.dao.update(libro)
     self.idLibro = None
     
   def delete(self):

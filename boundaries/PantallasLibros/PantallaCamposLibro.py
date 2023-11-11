@@ -1,10 +1,15 @@
 import tkinter as tk
-from entities.Libro import Libro
+from persistence.dtos.LibroDTO import LibroDTO
 from tkinter import ttk, PhotoImage, messagebox
 from config import png_aceptar, png_cancelar
 
 class PantallaCamposLibro:
-    campos = ["Titulo", "Precio", "Estado"]
+    campos = ["Titulo", "Precio"]
+    estados = {
+            "Disponible": 1,
+            "Prestado": 2,
+            "Extraviado": 3
+            }
     def __init__(self, gestor, socio: tuple, operacion: str) -> None:
         self.ventana = tk.Toplevel()
         self.gestor = gestor
@@ -43,7 +48,7 @@ class PantallaCamposLibro:
             campo.grid(row=i, column=1, padx=10, pady=10)
             self.entries.append(campo)
             if self.permiso == "R" or self.permiso == "D": campo.config(state=tk.DISABLED)
-       
+        self.crearCmbEstado()
         validate_cmd = (self.ventana.register(self.validar_flotante), '%P')
         self.entries[1].config(validate='key', validatecommand=validate_cmd)
         
@@ -66,9 +71,23 @@ class PantallaCamposLibro:
         boton = tk.Button(self.ventana, text=nombre, command=comando)
         return boton
 
+    def crearCmbEstado(self):
+        lblEstado = tk.Label(self.entriesFrame, text="Estado", background="#4c061d", foreground="white")
+        lblEstado.grid(row=len(self.campos), column=0, padx=10, pady=10)
+        self.cmbEstado = ttk.Combobox(self.entriesFrame, values=list(self.estados.keys()))
+        self.cmbEstado.set(list(self.estados.keys())[0])
+        self.cmbValue = self.estados[list(self.estados.keys())[0]]
+        self.cmbEstado.grid(row=len(self.campos), column=1, padx=10, pady=10)
+        self.cmbEstado.bind("<<ComboboxSelected>>", self.seleccionar_opcion)
+        if self.permiso != "U": self.cmbEstado.config(state=tk.DISABLED)
+
     def mostrarWidgets(self):
         for widget in self.widgets: widget.pack()
 
+    def seleccionar_opcion(self, event):
+        seleccionado = self.cmbEstado.get()
+        self.cmbValue = self.estados.get(seleccionado, "Valor no encontrado")
+    
     def validarContenidoEntries(self):
         for entry in self.entries:
             if entry.get() == "": return False
@@ -82,7 +101,7 @@ class PantallaCamposLibro:
                 return False
 
     def getValues(self):
-        return Libro(0, self.entries[0].get(), self.entries[1].get(), self.entries[2].get())
+        return LibroDTO(0, self.entries[0].get(), self.entries[1].get(), self.cmbValue)
 
     def aceptar(self):
         if not self.validarContenidoEntries():messagebox.showerror("Error", "Debe completar todos los campos")
