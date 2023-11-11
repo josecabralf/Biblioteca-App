@@ -20,3 +20,6 @@ class IPrestamoDAO(ABC):
   
   @abstractmethod
   def fetchBySocio(self, idSocio: int) -> list: ...
+  
+  @abstractmethod
+  def fetchByLibro(self, idLibro: int) -> Prestamo: ...

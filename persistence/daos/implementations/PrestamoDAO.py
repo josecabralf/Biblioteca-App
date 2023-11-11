@@ -50,3 +50,7 @@ class PrestamoDAOImplSQL(IPrestamoDAO):
     prestamos = [p.asPrestamo(LibroDAOImplSQL().fetchById(p.getLibro()), 
                               SocioDAOImplSQL().fetchById(p.getSocio())) for p in prestamosDTO]
     return prestamos
+  
+  def fetchByLibro(self, idLibro: int) -> Prestamo:
+    res = BDHelper().fetchByColumn(self.tableName, "codigo_lib", (idLibro,))
+    return self.fromResultsToPrestamo(res)

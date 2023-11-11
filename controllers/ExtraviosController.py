@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from boundaries.PantallasExtravios.PantallaExtravios import PantallaExtravios
 from boundaries.PantallasExtravios.PantallaEncontrarLibro import PantallaEncontrarLibro
 
@@ -63,6 +65,11 @@ class ExtraviosController:
   
   def aparecioLibro(self):
     self.libroEncontrado.aparecer()
+    prestamosLibro: Prestamo = [
+      p for p in self.prestamoDao.fetchByLibro(self.libroEncontrado.getCodigo()) if p.estaVigente()]
+    for p in prestamosLibro:
+      p.setFechaFin(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+      self.prestamoDao.update(prestamosLibro)
     self.libroDao.update(self.libroEncontrado)
     self.pantalla.showInfo("Registrado Libro Encontrado")
     self.libroEncontrado = None
