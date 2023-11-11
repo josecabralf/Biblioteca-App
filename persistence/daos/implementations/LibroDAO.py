@@ -2,7 +2,7 @@ from persistence.daos.interfaces.ILibroDAO import ILibroDAO
 from persistence.dtos.LibroDTO import LibroDTO
 from entities.Libro import Libro
 from persistence.BDHelper import BDHelper
-from persistence.RegistroNoEncontrado import RegistroNoEncontradoError
+from exceptions.RegistroNoEncontrado import RegistroNoEncontradoError
 
 class LibroDAOImplSQL(ILibroDAO):
   tableName = "Libros"

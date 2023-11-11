@@ -1,6 +1,5 @@
 from boundaries.PantallasLibros.PantallaLibros import PantallaLibros
 from boundaries.PantallasLibros.PantallaCamposLibro import PantallaCamposLibro
-from persistence.RegistroNoEncontrado import RegistroNoEncontradoError
 from persistence.daos.interfaces.ILibroDAO import ILibroDAO
 from persistence.daos.implementations.LibroDAO import LibroDAOImplSQL
 from persistence.BDHelper import BDHelper

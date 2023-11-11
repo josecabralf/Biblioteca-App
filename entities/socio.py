@@ -65,3 +65,9 @@ class Socio:
   # METODOS
   def tienePrestamosVigentes(self) -> bool:
     return any([p.estaVigente() for p in self.prestamos])
+  
+  def tieneMasDeTresPrestamosVigentes(self) -> bool:
+    return len([p for p in self.prestamos if p.estaVigente()]) > 3
+  
+  def tienePrestamoConDemora(self) -> bool:
+    return any([p.estaDemorado() for p in self.prestamos])

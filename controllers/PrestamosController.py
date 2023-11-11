@@ -3,7 +3,10 @@ from datetime import datetime
 from boundaries.PantallasPrestamos.PantallaPrestamos import PantallaPrestamos
 from boundaries.PantallasPrestamos.PantallaRegistrarDevolucion import PantallaRegistrarDevolucion
 from boundaries.PantallasPrestamos.PantallaRegistrarPrestamo import PantallaRegistrarPrestamo
-from persistence.RegistroNoEncontrado import RegistroNoEncontradoError
+
+from exceptions.RegistroNoEncontrado import RegistroNoEncontradoError
+from exceptions.SocioConInfraccion import PrestamoConDemora, MasDeTresPrestamos
+from exceptions.LibroNoDisponible import LibroNoDisponible
 
 from persistence.daos.interfaces.IPrestamoDAO import IPrestamoDAO
 from persistence.daos.implementations.PrestamoDAO import PrestamoDAOImplSQL
@@ -26,6 +29,8 @@ class PrestamosController:
     self.dao = dao
     self.libroDao = libroDao
     self.socioDao = socioDao
+    self.libroPrestamo = None
+    self.socioPrestamo = None
     self.loadPrestamos()
   
   def desuscribir(self, observer): BDHelper().desuscribir(observer)
@@ -60,14 +65,34 @@ class PrestamosController:
     self.idPrestamo = None
   def bloquearPantalla(self): self.pantalla.bloquear()
   
+  def validarSocio(self, idSocio: int):
+    socio = self.socioDao.fetchById(idSocio)
+    socio.setPrestamos(self.dao.fetchBySocio(idSocio))
+    if socio.tieneMasDeTresPrestamosVigentes(): raise MasDeTresPrestamos()
+    if socio.tienePrestamoConDemora(): raise PrestamoConDemora()
+    self.socioPrestamo = socio
+    return self.socioPrestamo.asTuple()
+  
+  def validarLibro(self, idLibro: int):
+    libro = self.libroDao.fetchById(idLibro)
+    if not libro.estaDisponible(): raise LibroNoDisponible()
+    self.libroPrestamo = libro
+    return self.libroPrestamo.asTuple()
+  
   def devolver(self):
     prestamo: Prestamo = self.prestamos[self.idPrestamo]
-    prestamo.setFechaFin(datetime.now())
+    prestamo.setFechaFin(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     libro = prestamo.getLibro()
     libro.devolver()
     self.libroDao.update(libro)
     self.dao.update(prestamo)
     self.idPrestamo = None
+  
+  def create(self, cantDias: int):
+    prestamo = Prestamo(0, self.libroPrestamo, self.socioPrestamo, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), cantDias, None)
+    self.libroPrestamo.prestar()
+    self.libroDao.update(self.libroPrestamo)
+    self.dao.create(prestamo)
   
   def openPrestamoWindow(self):
     self.bloquearPantalla()
@@ -77,3 +102,7 @@ class PrestamosController:
     self.bloquearPantalla()
     self.idPrestamo = int(data[0])
     PantallaRegistrarDevolucion(self, data[1:])
+    
+  def resetCamposTransaccion(self):
+    self.libroPrestamo = None
+    self.socioPrestamo = None

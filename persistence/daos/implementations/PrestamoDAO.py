@@ -6,7 +6,7 @@ from persistence.daos.implementations.LibroDAO import LibroDAOImplSQL
 from persistence.daos.implementations.SocioDAO import SocioDAOImplSQL
 
 from persistence.BDHelper import BDHelper
-from persistence.RegistroNoEncontrado import RegistroNoEncontradoError
+from exceptions.RegistroNoEncontrado import RegistroNoEncontradoError
 
 
 class PrestamoDAOImplSQL(IPrestamoDAO):

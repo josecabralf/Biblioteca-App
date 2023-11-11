@@ -1,6 +1,5 @@
 from boundaries.PantallasSocios.PantallaSocios import PantallaSocios
 from boundaries.PantallasSocios.PantallaCamposSocio import PantallaCamposSocio
-from persistence.RegistroNoEncontrado import RegistroNoEncontradoError
 
 from persistence.daos.interfaces.ISocioDAO import ISocioDAO
 from persistence.daos.implementations.SocioDAO import SocioDAOImplSQL

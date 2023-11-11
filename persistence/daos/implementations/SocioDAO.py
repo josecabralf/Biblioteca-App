@@ -2,7 +2,7 @@ from persistence.daos.interfaces.ISocioDAO import ISocioDAO
 from persistence.dtos.SocioDTO import SocioDTO
 from entities.Socio import Socio
 from persistence.BDHelper import BDHelper
-from persistence.RegistroNoEncontrado import RegistroNoEncontradoError
+from exceptions.RegistroNoEncontrado import RegistroNoEncontradoError
 
 class SocioDAOImplSQL(ISocioDAO):
   tableName = "Socios"
