@@ -17,5 +17,9 @@ class SocioDTO:
     return Socio(self._id, self._nombre, self._apellido, self._telefono, self._email)
   
   @classmethod
-  def toDTO(cls, socio: Socio) -> 'SocioDTO':
+  def fromSocio(cls, socio: Socio) -> 'SocioDTO':
     return SocioDTO(socio.id, socio.nombre, socio.apellido, socio.telefono, socio.email)
+  
+  @classmethod
+  def fromTuple(cls, tupla: tuple) -> 'SocioDTO':
+    return SocioDTO(tupla[0], tupla[1], tupla[2], tupla[3], tupla[4])

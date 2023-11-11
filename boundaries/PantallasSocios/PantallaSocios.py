@@ -3,7 +3,7 @@ from tkinter import Frame, Label, Entry, Scrollbar
 from tkinter import ttk
 from tkinter import StringVar, PhotoImage
 from tkinter import messagebox
-from tkinter import LEFT, RIGHT, TOP, X, Y, BOTH, CENTER
+from tkinter import LEFT, RIGHT, X, Y, BOTH, CENTER
 from tkinter.ttk import Treeview
 from config import png_search, png_refresh, png_create, png_delete, png_update, png_view
 from entities.fabricacionPura.Observer import IObserver
@@ -18,6 +18,14 @@ class PantallaSocios(PantallaSecundaria, IObserver):
     def actualizar(self, message): 
         self.refresh()
         messagebox.showinfo(message=message)
+    
+    def bloquear(self):
+        for c in self.frameBotones.winfo_children(): c.config(state="disabled")
+        for c in self.frameBtnVolver.winfo_children(): c.config(state="disabled")
+        
+    def desbloquear(self):
+        for c in self.frameBotones.winfo_children(): c.config(state="normal")
+        for c in self.frameBtnVolver.winfo_children(): c.config(state="normal")
     
     def createWidgets(self):
       super().createWidgets()
@@ -47,8 +55,7 @@ class PantallaSocios(PantallaSecundaria, IObserver):
     def loadTable(self):
         self.treeview.delete(*self.treeview.get_children())  # Limpiar la grilla
         for socio in self.socios:
-            self.treeview.insert("", "end", 
-                                 values=(socio.id, socio.nombre, socio.apellido, socio.telefono, socio.email))
+            self.treeview.insert("", "end", values=(socio.getId(),)+ socio.asTuple())
     
     def createBarraBusqueda(self):
         self.frameBusqueda = Frame(self.ventana, bg="#4c061d")
@@ -98,9 +105,13 @@ class PantallaSocios(PantallaSecundaria, IObserver):
         scrollbar.pack(side=RIGHT, fill=Y)
         self.treeview.config(yscrollcommand=scrollbar.set)
         self.treeview.pack(fill=BOTH, expand=True)
-
-        self.treeview.bind("<ButtonRelease-1>", self.seleccionar_fila)
+        self.treeview.bind("<ButtonRelease-1>", self.getRowValues)
         return self.frame_grilla
+
+    def getRowValues(self, event):
+        seleccion = self.treeview.selection()
+        if seleccion:
+            self.fila_seleccionada = self.treeview.item(seleccion[0], "values")
 
     def createBotonesAccion(self):
         self.frameBotones = Frame(self.ventana, bg="#4c061d")
@@ -126,16 +137,11 @@ class PantallaSocios(PantallaSecundaria, IObserver):
         btnBorrar.pack(side=LEFT, padx=5)
         return self.frameBotones
 
-    def seleccionar_fila(self, event):
-        seleccion = self.treeview.selection()
-        if seleccion:
-            pass
-
     def create(self):
-        pass
+        self.gestor.openCreateWindow()
 
     def read(self):
-        pass
+        self.gestor.openReadWindow(self.fila_seleccionada)
 
     def update(self):
         pass

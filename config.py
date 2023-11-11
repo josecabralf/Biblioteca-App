@@ -24,3 +24,9 @@ png_create = "./resources/icons/create.png"
 png_delete = "./resources/icons/delete.png"
 png_update = "./resources/icons/update.png"
 png_view = "./resources/icons/view.png"
+
+#====================================================================================================================
+#====================================================================================================================
+# TERCIARIAS
+png_aceptar = "./resources/icons/aceptar.png"
+png_cancelar = "./resources/icons/cancelar.png"
