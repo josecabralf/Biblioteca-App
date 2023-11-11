@@ -51,6 +51,7 @@ class Libro:
   def prestar(self): self.estado.prestar(self)
   def devolver(self): self.estado.devolver(self)
   def extraviar(self): self.estado.extraviar(self)
+  def aparecer(self): self.estado.aparecer(self)
   
   def estaDisponible(self) -> bool: return self.estado.esDisponible()
   def estaPrestado(self) -> bool: return self.estado.esPrestado()

@@ -6,7 +6,8 @@ from config import png_reportes, png_extravios, png_libros, png_prestamos, png_s
 from controllers.SociosController import SociosController
 from controllers.LibrosController import LibrosController
 from controllers.PrestamosController import PrestamosController
-from boundaries.PantallasExtravios.PantallaExtravios import PantallaExtravios
+from controllers.ExtraviosController import ExtraviosController
+
 from boundaries.PantallasReportes.PantallaReportes import PantallaReportes
 from boundaries.Pantalla import Pantalla
 
@@ -58,7 +59,7 @@ class PantallaPrincipal(Pantalla):
 
     def extravios(self):
         self.ocultarWidgets()
-        self.pantallaPrestamo = PantallaExtravios(self.backToMain)
+        ExtraviosController(self.backToMain)
 
     def reportes(self):
         self.ocultarWidgets()

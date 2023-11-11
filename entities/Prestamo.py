@@ -79,6 +79,13 @@ class Prestamo:
     if not self.estaVigente(): return False
     fecha_ini_dt = datetime.strptime(self.fecha_ini, "%Y-%m-%d %H:%M:%S")
     return (datetime.now() - fecha_ini_dt).days > self.dias
+
+  def calcularDemora(self):
+    if not self.estaVigente(): return 0
+    fecha_ini_dt = datetime.strptime(self.fecha_ini, "%Y-%m-%d %H:%M:%S")
+    return (datetime.now() - fecha_ini_dt).days - self.dias
+  
+  def tieneLibroExtraviado(self) -> bool: return (self.calcularDemora() > 30)
   
   def finalizar(self) -> None: self.fecha_fin = datetime.now()
   

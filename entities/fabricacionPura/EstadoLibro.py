@@ -10,16 +10,17 @@ class EstadoLibro(Singleton):
   def prestar(self, libro): return
   def extraviar(self, libro): return
   def devolver(self, libro): return
+  def aparecer(self, libro): return
   
-  
+
 class Disponible(EstadoLibro):
   def esDisponible(self) -> bool: return True
   def prestar(self, libro): libro.setEstado(Prestado())
   
   
 class Extraviado(EstadoLibro): 
-  def esExtraviado(self) -> bool: True
-  def devolver(self, libro): libro.setEstado(Disponible())
+  def esExtraviado(self) -> bool: return True
+  def aparecer(self, libro): libro.setEstado(Disponible())
   
   
 class Prestado(EstadoLibro):
