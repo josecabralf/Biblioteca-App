@@ -3,8 +3,8 @@ from tkinter import PhotoImage
 
 from config import png_reportes, png_extravios, png_libros, png_prestamos, png_socios, png_salir
 
-from use_cases.admin_socios.SociosController import SociosController
-from boundaries.PantallasLibros.PantallaLibros import PantallaLibros
+from controllers.SociosController import SociosController
+from controllers.LibrosController import LibrosController
 from boundaries.PantallasPrestamos.PantallaPrestamos import PantallaPrestamos
 from boundaries.PantallasExtravios.PantallaExtravios import PantallaExtravios
 from boundaries.PantallasReportes.PantallaReportes import PantallaReportes
@@ -50,7 +50,7 @@ class PantallaPrincipal(Pantalla):
 
     def libros(self):
         self.ocultarWidgets()
-        self.pantallaLibro = PantallaLibros(self.backToMain)
+        LibrosController(self.backToMain)
 
     def prestamos(self):
         self.ocultarWidgets()

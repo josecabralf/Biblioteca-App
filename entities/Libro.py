@@ -10,6 +10,9 @@ class Libro:
   def __str__(self) -> str:
     return f"Libro: {self.codigo} - {self.titulo} - {self.precio} - {self.estado}"
   
+  def asTuple(self) -> tuple:
+    return (self._titulo, self._precio, str(self._estado))
+  
   # PROPERTIES
   @property
   def codigo(self) -> int: return self._codigo
