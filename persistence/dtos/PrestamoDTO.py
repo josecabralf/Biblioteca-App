@@ -25,3 +25,6 @@ class PrestamoDTO:
   def toDTO(cls, prestamo: Prestamo):
     return cls(prestamo.getId(), prestamo.getLibro().getId(), prestamo.getSocio().getId(), 
                prestamo.getFechaIni(), prestamo.getDias(), prestamo.getFechaFin())
+    
+  def getLibro(self): return self.libro
+  def getSocio(self): return self.socio

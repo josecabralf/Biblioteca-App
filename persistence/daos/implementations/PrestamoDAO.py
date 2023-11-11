@@ -50,6 +50,6 @@ class PrestamoDAOImplSQL(IPrestamoDAO):
   
   def fromResultsToPrestamo(self, res):
     prestamosDTO = [PrestamoDTO(p[0], p[1], p[2], p[3], p[4], p[5]) for p in res]
-    prestamos = [p.asPrestamo(LibroDAOImplSQL().fetchById(p.getCodigoLibro()), 
-                              SocioDAOImplSQL().fetchById(p.getIdSocio())) for p in prestamosDTO]
+    prestamos = [p.asPrestamo(LibroDAOImplSQL().fetchById(p.getLibro()), 
+                              SocioDAOImplSQL().fetchById(p.getSocio())) for p in prestamosDTO]
     return prestamos

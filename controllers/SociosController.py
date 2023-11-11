@@ -59,7 +59,7 @@ class SociosController:
       socio = prestamos[0].getSocio()
       socio.setPrestamos(prestamos)
       if socio.tienePrestamosVigentes():
-        self.pantalla.mostrarError("El socio tiene prestamos vigentes")
+        self.pantalla.showErrorMessage(f"No se puede eliminar socio: tiene prestamos sin devolver")
         return
     self.dao.delete(self.idSocio)
     self.idSocio = None
