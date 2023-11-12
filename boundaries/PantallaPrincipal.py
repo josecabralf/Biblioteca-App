@@ -7,8 +7,8 @@ from controllers.SociosController import SociosController
 from controllers.LibrosController import LibrosController
 from controllers.PrestamosController import PrestamosController
 from controllers.ExtraviosController import ExtraviosController
+from controllers.ReportesController import ReportesController
 
-from boundaries.PantallasReportes.PantallaReportes import PantallaReportes
 from boundaries.Pantalla import Pantalla
 
 class PantallaPrincipal(Pantalla):
@@ -63,7 +63,7 @@ class PantallaPrincipal(Pantalla):
 
     def reportes(self):
         self.ocultarWidgets()
-        self.pantallaPrestamo = PantallaReportes(self.backToMain)
+        ReportesController(self.backToMain)
 
     def salir(self):
         self.ventana.destroy()
