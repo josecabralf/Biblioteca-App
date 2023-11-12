@@ -96,11 +96,15 @@ class ExtraviosController:
   def openEncontrarWindow(self, libro):
     self.bloquearPantalla()
     self.libroEncontrado = self.librosExtraviados[int(libro[0])]
-    PantallaEncontrarLibro(self, libro[1:])
+    self.crearPantallaEncontrarLibro(libro[1:])
+  
+  def crearPantallaEncontrarLibro(self, libro): PantallaEncontrarLibro(self, libro)
     
   def openNuevoExtravioWindow(self):
     self.bloquearPantalla()
-    PantallaNuevoExtravio(self)
+    self.crearPantallaNuyevoExtravio()
+    
+  def crearPantallaNuyevoExtravio(self): PantallaNuevoExtravio(self)
     
   def resetCamposTransaccion(self):
     self.libroEncontrado = None

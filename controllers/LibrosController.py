@@ -56,21 +56,23 @@ class LibrosController:
       return
     self.dao.delete(self.idLibro)
     self.idLibro = None
-    
+  
+  def crearPantallCamposLibro(self, libro, operacion): PantallaCamposLibro(self, libro, operacion)
+  
   def openCreateWindow(self):
     self.bloquearPantalla()
-    PantallaCamposLibro(self, None, "C")
+    self.crearPantallCamposLibro(None, "C")
     
   def openReadWindow(self, data: tuple):
     self.bloquearPantalla()
-    PantallaCamposLibro(self, data[1:], "R")
+    self.crearPantallCamposLibro(data[1:], "R")
   
   def openUpdateWindow(self, data: tuple):
     self.bloquearPantalla()
     self.idLibro = int(data[0])
-    PantallaCamposLibro(self, data[1:], "U")
+    self.crearPantallCamposLibro(data[1:], "U")
     
   def openDeleteWindow(self, data: tuple):
     self.bloquearPantalla()
     self.idLibro = int(data[0])
-    PantallaCamposLibro(self, data[1:], "D")
+    self.crearPantallCamposLibro(data[1:], "D")

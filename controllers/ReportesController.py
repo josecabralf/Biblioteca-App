@@ -15,7 +15,14 @@ class ReportesController:
     self.libroDao = libroDao
     self.socioDao = socioDao
     
-  def reportarLibrosEstado(self): pass
+  def reportarLibrosEstado(self):
+    libros = self.libroDao.fetchAll()
+    dictEstados = {
+      "Disponible": 0,
+      "Prestado": 0,
+      "Extraviado": 0}
+    for l in libros: dictEstados[str(l.getEstado())] += 1
+    self.crearPantallaLibrosEstado("Libros por Estado", dictEstados)
   
   def reportarRestock(self): pass
   

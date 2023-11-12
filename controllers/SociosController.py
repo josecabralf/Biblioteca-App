@@ -54,30 +54,36 @@ class SociosController:
     self.idSocio = None
     
   def delete(self):
+    if self.validarSocioSinPrestamos():
+      self.dao.delete(self.idSocio)
+      self.idSocio = None
+  
+  def validarSocioSinPrestamos(self):
     prestamos = self.prestamoDao.fetchBySocio(self.idSocio)
     if prestamos:
       socio = self.socios[self.idSocio]
       socio.setPrestamos(prestamos)
       if socio.tienePrestamosVigentes():
         self.pantalla.showErrorMessage(f"No se puede eliminar socio: tiene prestamos sin devolver")
-        return
-    self.dao.delete(self.idSocio)
-    self.idSocio = None
-    
+        return False
+    return True
+  
   def openCreateWindow(self):
     self.bloquearPantalla()
-    PantallaCamposSocio(self, None, "C")
+    self.crearPantallaCamposSocio(None, "C")
     
   def openReadWindow(self, data: tuple):
     self.bloquearPantalla()
-    PantallaCamposSocio(self, data[1:], "R")
+    self.crearPantallaCamposSocio(data[1:], "R")
   
   def openUpdateWindow(self, data: tuple):
     self.bloquearPantalla()
     self.idSocio = int(data[0])
-    PantallaCamposSocio(self, data[1:], "U")
+    self.crearPantallaCamposSocio(data[1:], "U")
     
   def openDeleteWindow(self, data: tuple):
     self.bloquearPantalla()
     self.idSocio = int(data[0])
-    PantallaCamposSocio(self, data[1:], "D")
+    self.crearPantallaCamposSocio(data[1:], "D")
+    
+  def crearPantallaCamposSocio(self, data, operacion): PantallaCamposSocio(self, data, operacion)

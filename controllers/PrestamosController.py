@@ -94,12 +94,16 @@ class PrestamosController:
   
   def openPrestamoWindow(self):
     self.bloquearPantalla()
-    PantallaRegistrarPrestamo(self)
+    self.crearPantallaRegistrarPrestamo()
+    
+  def crearPantallaRegistrarPrestamo(self): PantallaRegistrarPrestamo(self)
     
   def openDevolucionWindow(self, data: tuple):
     self.bloquearPantalla()
     self.idPrestamo = int(data[0])
-    PantallaRegistrarDevolucion(self, data[1:])
+    self.crearPantallaRegistrarDevolucion(data[1:])
+    
+  def crearPantallaRegistrarDevolucion(self, data: tuple): PantallaRegistrarDevolucion(self, data)
     
   def resetCamposTransaccion(self):
     self.libroPrestamo = None
