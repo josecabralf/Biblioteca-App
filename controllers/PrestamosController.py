@@ -16,8 +16,6 @@ from persistence.daos.interfaces.ISocioDAO import ISocioDAO
 from persistence.daos.implementations.SocioDAO import SocioDAOImplSQL
 
 from persistence.BDHelper import BDHelper
-from persistence.dtos.PrestamoDTO import PrestamoDTO
-from persistence.dtos.LibroDTO import LibroDTO
 
 from entities.Prestamo import Prestamo
 

@@ -5,7 +5,7 @@ from tkinter import StringVar, PhotoImage
 from tkinter import messagebox
 from tkinter import LEFT, RIGHT, X, Y, BOTH, CENTER
 from tkinter.ttk import Treeview
-from config import png_search, png_refresh, png_extravios, png_found
+from config import png_search, png_refresh, png_extravios, png_found, png_create
 from entities.fabricacionPura.Observer import IObserver
 
 class PantallaExtravios(PantallaSecundaria, IObserver):
@@ -82,13 +82,19 @@ class PantallaExtravios(PantallaSecundaria, IObserver):
         
         self.imgEncontrados = PhotoImage(file=png_found).subsample(15)
         self.imgExtravios = PhotoImage(file=png_extravios).subsample(15)
+        self.imgNuevoExtravio = PhotoImage(file=png_create).subsample(15)
         
         btnEncontrado = ttk.Button(self.frameBotones, text="Encontrado", command=self.encontrar, 
                               style="Botones.TButton", image=self.imgEncontrados, compound="left")
+        btnNuevoExtravio = ttk.Button(self.frameBotones, text="Nuevo Extravio", 
+                                      command=self.gestor.openNuevoExtravioWindow,
+                                      style="Botones.TButton", image=self.imgNuevoExtravio, compound="left")
         btnActualizar = ttk.Button(self.frameBotones, text="Actualizar", command=self.buscarNuevosExtravios, 
                                   style="Botones.TButton", image=self.imgExtravios, compound="left")
-        btnEncontrado.pack(side=LEFT, padx=5)
+        
         btnActualizar.pack(side=LEFT, padx=5)
+        btnEncontrado.pack(side=LEFT, padx=5)
+        btnNuevoExtravio.pack(side=LEFT, padx=5)
         return self.frameBotones
 
     def createBarraBusqueda(self):
