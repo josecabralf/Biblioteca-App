@@ -16,6 +16,7 @@ class EstadoLibro(Singleton):
 class Disponible(EstadoLibro):
   def esDisponible(self) -> bool: return True
   def prestar(self, libro): libro.setEstado(Prestado())
+  def extraviar(self, libro): libro.setEstado(Extraviado())
   
   
 class Extraviado(EstadoLibro): 
