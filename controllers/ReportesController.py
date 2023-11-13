@@ -40,7 +40,7 @@ class ReportesController:
   def reportarPrestamoSocio(self): pass
   
   def reportarDemorados(self): 
-    prestamos = [(p.getID(),) + p.asTuple() for p in self.prestamoDao.fetchAll() if p.estaDemorado()]
+    prestamos = [(p.getId(),) + p.asTuple() for p in self.prestamoDao.fetchAll() if p.estaDemorado()]
     self.crearPantallaDemorados(prestamos)
   
   def volver(self):
@@ -51,11 +51,14 @@ class ReportesController:
     self.determinarStrategyImprimir(strategy).imprimir(data)
     pantalla.showInfo("Reporte generado con exito")
   
-  def crearPantallaLibrosEstado(self, dictFrecuenciaEstado): PantallaLibroEstados(self, dictFrecuenciaEstado)
+  def crearPantallaLibrosEstado(self, dictFrecuenciaEstado): 
+    PantallaLibroEstados(self, dictFrecuenciaEstado = dictFrecuenciaEstado)
     
-  def crearPantallaRestock(self, libros, precioReposicionTotal): PantallaRestock(self, libros, precioReposicionTotal)
+  def crearPantallaRestock(self, libros, precioReposicionTotal): 
+    PantallaRestock(self, libros=libros, precioReposicion=precioReposicionTotal)
   
-  def crearPantallaDemorados(self, prestamos): PantallaDemorados(self, prestamos)
+  def crearPantallaDemorados(self, prestamos): 
+    PantallaDemorados(self, prestamos=prestamos)
   
   def determinarStrategyImprimir(self, strategy):
     strategies = {
