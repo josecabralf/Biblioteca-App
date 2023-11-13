@@ -74,7 +74,9 @@ class PantallaCamposSocio:
         return Socio(0, self.entries[0].get(), self.entries[1].get(), self.entries[2].get(), self.entries[3].get())
 
     def aceptar(self):
-        if not self.validarContenidoEntries():messagebox.showerror("Error", "Debe completar todos los campos")
+        if not self.validarContenidoEntries():
+            messagebox.showerror("Error", "Debe completar todos los campos")
+            return
         if self.permiso == "C": self.gestor.create(self.getValues())
         elif self.permiso == "U": self.gestor.update(self.getValues())
         elif self.permiso == "D": self.gestor.delete()
