@@ -17,3 +17,6 @@ class ILibroDAO(ABC):
   
   @abstractmethod
   def delete(self, id: int): ...
+  
+  @abstractmethod
+  def fetchByTitulo(self, titulo: str) -> Libro: ...

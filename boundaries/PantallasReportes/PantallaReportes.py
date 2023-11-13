@@ -17,7 +17,7 @@ class PantallaReportes(PantallaSecundaria):
       
     def reportarRestock(self): self.gestor.reportarRestock()
       
-    def reportarSolicitantesLibro(self): self.gestor.reportarSolicitantesLibro()
+    def reportarSolicitantesLibro(self): self.gestor.openValidarLibro()
       
     def reportarPrestamoSocio(self): self.gestor.reportarPrestamoSocio()
       

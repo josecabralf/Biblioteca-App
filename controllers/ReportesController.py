@@ -3,6 +3,9 @@ from boundaries.PantallasReportes.PantallaLibroEstados import PantallaLibroEstad
 from boundaries.PantallasReportes.PantallaRestock import PantallaRestock
 from boundaries.PantallasReportes.PantallaDemorados import PantallaDemorados
 
+from boundaries.PantallasReportes.PantallaSolicitantes import PantallaSolicitantes
+from boundaries.PantallasReportes.PantallaValidacionLibro import PantallaValidacionLibro
+
 from persistence.daos.interfaces.IPrestamoDAO import IPrestamoDAO
 from persistence.daos.implementations.PrestamoDAO import PrestamoDAOImplSQL
 from persistence.daos.interfaces.ILibroDAO import ILibroDAO
@@ -35,7 +38,14 @@ class ReportesController:
     precioReposicionTotal = round(sum([l[2] for l in libros]), 2)
     self.crearPantallaRestock(libros, precioReposicionTotal)
   
-  def reportarSolicitantesLibro(self): pass
+  def openValidarLibro(self):
+    self.crearPantallaValidacionLibro()
+  
+  def validarLibro(self, titulo):
+    ...
+  
+  def reportarSolicitantesLibro(self, libro): 
+    ...
   
   def reportarPrestamoSocio(self): pass
   
@@ -59,6 +69,8 @@ class ReportesController:
   
   def crearPantallaDemorados(self, prestamos): 
     PantallaDemorados(self, prestamos=prestamos)
+    
+  def crearPantallaValidacionLibro(self): PantallaValidacionLibro(self)
   
   def determinarStrategyImprimir(self, strategy):
     strategies = {

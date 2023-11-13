@@ -37,4 +37,8 @@ class LibroDAOImplSQL(ILibroDAO):
     self.fetchById(id)
     BDHelper().delete(self.tableName, self.pk, (id,))
   
-  
+  def fetchByTitulo(self, titulo: str) -> Libro:
+    res = BDHelper().fetchByColumn(self.tableName, "titulo", (titulo,))
+    if not res: raise RegistroNoEncontradoError(f"No se encontró el libro con titulo {titulo}")
+    libroDTO = LibroDTO(res[0][0], res[0][1], res[0][2], res[0][3])
+    return libroDTO.asLibro()
