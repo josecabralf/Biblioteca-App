@@ -62,10 +62,3 @@ class PantallaReportes(PantallaSecundaria):
         for i in range(5): self.frameBotones.rowconfigure(i, weight=1)
         return self.frameBotones
       
-    def bloquear(self):
-        for c in self.frameBotones.winfo_children(): c.config(state="disabled")
-        for c in self.frameBtnVolver.winfo_children(): c.config(state="disabled")
-        
-    def desbloquear(self):
-        for c in self.frameBotones.winfo_children(): c.config(state="normal")
-        for c in self.frameBtnVolver.winfo_children(): c.config(state="normal")

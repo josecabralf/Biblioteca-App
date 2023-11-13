@@ -1,4 +1,7 @@
 from boundaries.PantallasReportes.PantallaReportes import PantallaReportes
+from boundaries.PantallasReportes.PantallaLibroEstados import PantallaLibroEstados
+from boundaries.PantallasReportes.PantallaRestock import PantallaRestock
+from boundaries.PantallasReportes.PantallaDemorados import PantallaDemorados
 
 from persistence.daos.interfaces.IPrestamoDAO import IPrestamoDAO
 from persistence.daos.implementations.PrestamoDAO import PrestamoDAOImplSQL
@@ -6,6 +9,8 @@ from persistence.daos.interfaces.ILibroDAO import ILibroDAO
 from persistence.daos.implementations.LibroDAO import LibroDAOImplSQL
 from persistence.daos.interfaces.ISocioDAO import ISocioDAO
 from persistence.daos.implementations.SocioDAO import SocioDAOImplSQL
+
+from entities.fabricacionPura.ImprimirStrategy import *
 
 class ReportesController:
   def __init__(self, backToMain, prestamoDao: IPrestamoDAO = PrestamoDAOImplSQL(),
@@ -17,24 +22,45 @@ class ReportesController:
     
   def reportarLibrosEstado(self):
     libros = self.libroDao.fetchAll()
-    dictEstados = {
+    dictFrecuenciaEstado = {
       "Disponible": 0,
       "Prestado": 0,
       "Extraviado": 0}
-    for l in libros: dictEstados[str(l.getEstado())] += 1
-    self.crearPantallaLibrosEstado("Libros por Estado", dictEstados)
+    for l in libros: dictFrecuenciaEstado[str(l.getEstado())] += 1
+    self.crearPantallaLibrosEstado(dictFrecuenciaEstado)
   
-  def reportarRestock(self): pass
+  def reportarRestock(self):
+    libros = [l.asTuple()[0:2] for l in self.libroDao.fetchAll() if l.estaExtraviado()]
+    precioReposicionTotal = sum([l[1] for l in libros])
+    self.crearPantallaRestock(libros, precioReposicionTotal)
   
   def reportarSolicitantesLibro(self): pass
   
   def reportarPrestamoSocio(self): pass
   
-  def reportarDemorados(self): pass
+  def reportarDemorados(self): 
+    prestamos = [(p.getID(),) + p.asTuple() for p in self.prestamoDao.fetchAll() if p.estaDemorado()]
+    self.crearPantallaDemorados(prestamos)
   
   def volver(self):
     self.pantalla.destruir()
     self.pantalla.volver()
     
-  def desbloquearPantalla(self): self.pantalla.desbloquear()
-  def bloquearPantalla(self): self.pantalla.bloquear()
+  def imprimir(self, strategy, data): 
+    self.determinarStrategyImprimir(strategy).imprimir(data)
+  
+  def crearPantallaLibrosEstado(self, dictFrecuenciaEstado): PantallaLibroEstados(self, dictFrecuenciaEstado)
+    
+  def crearPantallaRestock(self, libros, precioReposicionTotal): PantallaRestock(self, libros, precioReposicionTotal)
+  
+  def crearPantallaDemorados(self, prestamos): PantallaDemorados(self, prestamos)
+  
+  def determinarStrategyImprimir(self, strategy):
+    strategies = {
+      0: ImprimirLibroEstados(),
+      1: ImprimirRestock(),
+      2: ImprimirSolicitantesLibro(),
+      3: ImprimirPrestamoSocio(),
+      4: ImprimirDemorados()
+    }
+    return strategies[strategy]

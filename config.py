@@ -35,6 +35,7 @@ png_search = "./resources/icons/helpers/search.png"
 # OTHERS
 png_devolucion = "./resources/icons/others/devolucion.png"
 png_found = "./resources/icons/others/found.png"
+png_csv = "./resources/icons/others/csv.png"
 
 #====================================================================================================================
 #====================================================================================================================
@@ -44,3 +45,9 @@ png_restock = "./resources/icons/reports/restock.png"
 png_solicitantes = "./resources/icons/reports/solicitantes.png"
 png_solicitudes = "./resources/icons/reports/solicitudes.png"
 png_state = "./resources/icons/reports/state.png"
+
+
+#====================================================================================================================
+#====================================================================================================================
+# ARCHIVOS
+path_reportes = "./resources/reportes/"
