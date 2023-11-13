@@ -19,3 +19,8 @@ La biblioteca requiere que el software ofrezca como mínimo las funcionalidades 
    3. Nombre de todos los solicitantes de un libro en particular identificado por su título
    4. Listado de préstamos de un socio identificado por su número de socio
    5. Listado de préstamos demorados
+
+Para correr el programa ejecute los siguientes comandos:
+```bash
+   cd src
+   python bibliotecaApp.py

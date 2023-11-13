@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Run bibliotecaApp.py",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/bibliotecaApp.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/src"
+    }
+  ]
+}
