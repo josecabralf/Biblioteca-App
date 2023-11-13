@@ -1,10 +1,12 @@
 from boundaries.PantallasReportes.PantallaReportes import PantallaReportes
-from boundaries.PantallasReportes.PantallaLibroEstados import PantallaLibroEstados
-from boundaries.PantallasReportes.PantallaRestock import PantallaRestock
-from boundaries.PantallasReportes.PantallaDemorados import PantallaDemorados
 
-from boundaries.PantallasReportes.PantallaSolicitantes import PantallaSolicitantes
-from boundaries.PantallasReportes.PantallaValidacionLibro import PantallaValidacionLibro
+from boundaries.PantallasReportes.Reportes.PantallaLibroEstados import PantallaLibroEstados
+from boundaries.PantallasReportes.Reportes.PantallaRestock import PantallaRestock
+from boundaries.PantallasReportes.Reportes.PantallaDemorados import PantallaDemorados
+from boundaries.PantallasReportes.Reportes.PantallaSolicitantes import PantallaSolicitantes
+
+from boundaries.PantallasReportes.Validaciones.PantallaValidacionLibro import PantallaValidacionLibro
+from boundaries.PantallasReportes.Validaciones.PantallaValidacionSocio import PantallaValidacionSocio
 
 from persistence.daos.interfaces.IPrestamoDAO import IPrestamoDAO
 from persistence.daos.implementations.PrestamoDAO import PrestamoDAOImplSQL
@@ -50,7 +52,15 @@ class ReportesController:
     socios = [(s.getId(),) + s.asTuple()[0:2] for s in socios]
     self.crearPantallaSolicitantes(libro[1], socios)
   
-  def reportarPrestamoSocio(self): pass
+  def openValidarSocio(self):
+    self.crearPantallaValidacionSocio()
+    
+  def validarSocio(self, id):
+    socio = self.socioDao.fetchById(id)
+    return (socio.getId(),) + socio.asTuple()
+  
+  def reportarPrestamoSocio(self, socio: tuple): 
+    self.crearPantallaPrestamoSocio(socio)
   
   def reportarDemorados(self): 
     prestamos = [(p.getId(),) + p.asTuple()[0:4] for p in self.prestamoDao.fetchAll() if p.estaDemorado()]
@@ -78,6 +88,12 @@ class ReportesController:
     
   def crearPantallaSolicitantes(self, libro, socios):
     PantallaSolicitantes(self, libro=libro, solicitantes=socios)
+    
+  def crearPantallaValidacionSocio(self):
+    PantallaValidacionSocio(self)
+  
+  def crearPantallaPrestamoSocio(self, socio):
+    ...
   
   def determinarStrategyImprimir(self, strategy):
     strategies = {

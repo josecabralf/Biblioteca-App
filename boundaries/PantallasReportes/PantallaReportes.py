@@ -19,7 +19,7 @@ class PantallaReportes(PantallaSecundaria):
       
     def reportarSolicitantesLibro(self): self.gestor.openValidarLibro()
       
-    def reportarPrestamoSocio(self): self.gestor.reportarPrestamoSocio()
+    def reportarPrestamoSocio(self): self.gestor.openValidarSocio()
       
     def reportarDemorados(self): self.gestor.reportarDemorados()
     
