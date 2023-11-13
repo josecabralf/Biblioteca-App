@@ -41,11 +41,13 @@ class LibrosController:
   
   def create(self, libroDTO: LibroDTO): 
     libro = libroDTO.asLibro()
+    libro.setTitulo(libro.getTitulo().upper())
     self.dao.create(libro)
   
   def update(self, libroDTO: LibroDTO):
     libro = libroDTO.asLibro()
     libro._codigo = self.idLibro
+    libro.setTitulo(libro.getTitulo().upper())
     self.dao.update(libro)
     self.idLibro = None
     

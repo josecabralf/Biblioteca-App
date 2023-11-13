@@ -46,10 +46,15 @@ class SociosController:
     self.pantalla.destruir()
     self.pantalla.volver()
   
-  def create(self, socio: Socio): self.dao.create(socio)
+  def create(self, socio: Socio): 
+    socio.setNombre(socio.getNombre().upper())
+    socio.setApellido(socio.getApellido().upper())
+    self.dao.create(socio)
   
   def update(self, socio: Socio):
     socio._id = self.idSocio
+    socio.setNombre(socio.getNombre().upper())
+    socio.setApellido(socio.getApellido().upper())
     self.dao.update(socio)
     self.idSocio = None
     
