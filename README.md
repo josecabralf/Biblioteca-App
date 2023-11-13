@@ -6,16 +6,16 @@ Por otro lado, cada vez que un libro es prestado se registra el socio que lo sol
 
 Todo libro prestado y que posea más de 30 días de demora en su devolución se considera extraviado, por lo tanto el software debe poder listar aquellos que se encuentren en tal condición para ofrecer al usuario el cambio de estado.
 
-Cuando un socio solicite un libro el software debe verificar que el socio no posea más de tres libros prestados (aunque todavía se encuentre dentro del plazo del préstamo) y que no posea ningún libro con demora en su devolución.
+Cuando un socio solicite un libro, el software debe verificar que el socio no posea más de tres libros prestados (aunque todavía se encuentre dentro del plazo del préstamo) y que no posea ningún libro con demora en su devolución.
 
 La biblioteca requiere que el software ofrezca como mínimo las funcionalidades de:
-1. Administración de socios
-2. Administración de libros
-3. Registración de préstamos y devoluciones
-4. Registración de libros extraviados
-5. Reportes:
-  1. Cantidad de libros en cada estado (tres totales)
-  2. Sumatoria del precio de reposición de todos los libros extraviados
-  3. Nombre de todos los solicitantes de un libro en particular identificado por su título
-  4. Listado de préstamos de un socio identificado por su número de socio
-  5. Listado de préstamos demorados
+1. **Administración de socios**
+2. **Administración de libros**
+3. **Registración de préstamos y devoluciones**
+4. **Registración de libros extraviados**
+5. **Reportes:**
+   1. Cantidad de libros en cada estado (tres totales)
+   2. Sumatoria del precio de reposición de todos los libros extraviados
+   3. Nombre de todos los solicitantes de un libro en particular identificado por su título
+   4. Listado de préstamos de un socio identificado por su número de socio
+   5. Listado de préstamos demorados
