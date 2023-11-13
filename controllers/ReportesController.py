@@ -32,7 +32,7 @@ class ReportesController:
   def reportarRestock(self):
     libros = [(l.getCodigo(),) + l.asTuple()[0:2] for l in self.libroDao.fetchAll() if l.estaExtraviado()]
     #(id, nombre, precio)
-    precioReposicionTotal = sum([l[2] for l in libros])
+    precioReposicionTotal = round(sum([l[2] for l in libros]), 2)
     self.crearPantallaRestock(libros, precioReposicionTotal)
   
   def reportarSolicitantesLibro(self): pass
