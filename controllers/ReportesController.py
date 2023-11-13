@@ -40,7 +40,7 @@ class ReportesController:
   def reportarPrestamoSocio(self): pass
   
   def reportarDemorados(self): 
-    prestamos = [(p.getId(),) + p.asTuple() for p in self.prestamoDao.fetchAll() if p.estaDemorado()]
+    prestamos = [(p.getId(),) + p.asTuple()[0:4] for p in self.prestamoDao.fetchAll() if p.estaDemorado()]
     self.crearPantallaDemorados(prestamos)
   
   def volver(self):

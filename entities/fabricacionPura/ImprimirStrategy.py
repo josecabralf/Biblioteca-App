@@ -4,6 +4,7 @@ from datetime import date
 from config import path_reportes
 
 class ImprimirStrategy(Singleton):
+    dir: str = ...
     @abstractmethod
     def imprimir(self, data: tuple):pass
     
@@ -29,7 +30,7 @@ class ImprimirRestock(ImprimirStrategy):
 
 class ImprimirSolicitantesLibro(ImprimirStrategy):
     def imprimir(self, data: tuple):
-        with open(f"{path_reportes}solicitantesLibro_{date.today()}.csv", "w") as file:
+        with open(f"{path_reportes}{self.dir}solicitantesLibro_{date.today()}.csv", "w") as file:
             file.write("ID,Nombre,Apellido,Fecha de Prestamo,Fecha de Devolucion\n")
             for id, nombre, apellido, fechaPrestamo, fechaDevolucion in data:
                 file.write(f"{id},{nombre},{apellido},{fechaPrestamo},{fechaDevolucion}\n")
@@ -37,7 +38,7 @@ class ImprimirSolicitantesLibro(ImprimirStrategy):
                 
 class ImprimirPrestamoSocio(ImprimirStrategy):
     def imprimir(self, data: tuple):
-        with open(f"{path_reportes}prestamoSocio_{date.today()}.csv", "w") as file:
+        with open(f"{path_reportes}{self.dir}prestamoSocio_{date.today()}.csv", "w") as file:
             file.write("ID,Nombre,Apellido,Fecha de Prestamo,Fecha de Devolucion\n")
             for id, nombre, apellido, fechaPrestamo, fechaDevolucion in data:
                 file.write(f"{id},{nombre},{apellido},{fechaPrestamo},{fechaDevolucion}\n")
@@ -45,8 +46,9 @@ class ImprimirPrestamoSocio(ImprimirStrategy):
                 
 
 class ImprimirDemorados(ImprimirStrategy):
+    dir = "prestamosDemorados/"
     def imprimir(self, data: tuple):
-        with open(f"{path_reportes}demorados_{date.today()}.csv", "w") as file:
-            file.write("ID,Nombre,Apellido,Fecha de Prestamo,Fecha de Devolucion\n")
-            for id, nombre, apellido, fechaPrestamo, fechaDevolucion in data:
-                file.write(f"{id},{nombre},{apellido},{fechaPrestamo},{fechaDevolucion}\n")
+        with open(f"{path_reportes}{self.dir}demorados_{date.today()}.csv", "w") as file:
+            file.write("ID,Libro,Socio,Fecha Inicio,Dias Solicitado\n")
+            for id, libro, socio, fechaIni, cantDias in data[0]:
+                file.write(f"{id},{libro},{socio},{fechaIni},{cantDias}\n")

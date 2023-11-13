@@ -24,9 +24,9 @@ class PantallaDemorados(TemplatePantallaResultados):
   
   def crearResultados(self):
     self.frameResultados = tk.Frame(self.ventana, background="#4c061d")
-    columns = ("ID", "Libro", "Socio", "Fecha Inicio", "Días", "Fecha Fin")
+    columns = ("ID", "Libro", "Socio", "Fecha Inicio", "Días Solicitado")
     self.treeview = ttk.Treeview(self.frameResultados, columns=columns, show="headings", selectmode="browse")
-    column_widths = {"ID": 50, "Libro": 300, "Socio": 300, "Fecha Inicio": 150, "Días": 50, "Fecha Fin": 150}
+    column_widths = {"ID": 50, "Libro": 300, "Socio": 300, "Fecha Inicio": 150, "Días Solicitado": 150}
     
     for col in columns:
       self.treeview.heading(col, text=col)
@@ -43,4 +43,4 @@ class PantallaDemorados(TemplatePantallaResultados):
   def loadTable(self):
     for p in self.prestamos: self.treeview.insert("", "end", values=p)
   
-  def imprimir(self): self.gestor.imprimir(self, 1, (self.prestamos,))
+  def imprimir(self): self.gestor.imprimir(self, 4, (self.prestamos,))
