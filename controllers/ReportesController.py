@@ -4,6 +4,7 @@ from boundaries.PantallasReportes.Reportes.PantallaLibroEstados import PantallaL
 from boundaries.PantallasReportes.Reportes.PantallaRestock import PantallaRestock
 from boundaries.PantallasReportes.Reportes.PantallaDemorados import PantallaDemorados
 from boundaries.PantallasReportes.Reportes.PantallaSolicitantes import PantallaSolicitantes
+from boundaries.PantallasReportes.Reportes.PantallaPrestamosSocio import PantallaPrestamosSocio
 
 from boundaries.PantallasReportes.Validaciones.PantallaValidacionLibro import PantallaValidacionLibro
 from boundaries.PantallasReportes.Validaciones.PantallaValidacionSocio import PantallaValidacionSocio
@@ -26,19 +27,25 @@ class ReportesController:
     self.socioDao = socioDao
     
   def reportarLibrosEstado(self):
+    dictFrecuenciaEstado = self.calcularCantidadLibrosPorEstado()
+    self.crearPantallaLibrosEstado(dictFrecuenciaEstado)
+    
+  def calcularCantidadLibrosPorEstado(self):
     libros = self.libroDao.fetchAll()
     dictFrecuenciaEstado = {
       "Disponible": 0,
       "Prestado": 0,
       "Extraviado": 0}
     for l in libros: dictFrecuenciaEstado[str(l.getEstado())] += 1
-    self.crearPantallaLibrosEstado(dictFrecuenciaEstado)
+    return dictFrecuenciaEstado
   
   def reportarRestock(self):
-    libros = [(l.getCodigo(),) + l.asTuple()[0:2] for l in self.libroDao.fetchAll() if l.estaExtraviado()]
-    #(id, nombre, precio)
+    libros = self.buscarLibrosExtraviados() #[(id, nombre, precio)]
     precioReposicionTotal = round(sum([l[2] for l in libros]), 2)
     self.crearPantallaRestock(libros, precioReposicionTotal)
+  
+  def buscarLibrosExtraviados(self):
+    return [(l.getCodigo(),) + l.asTuple()[0:2] for l in self.libroDao.fetchAll() if l.estaExtraviado()]
   
   def openValidarLibro(self):
     self.crearPantallaValidacionLibro()
@@ -48,9 +55,12 @@ class ReportesController:
     return (libro.getCodigo(),)+(libro.asTuple()[0],)
   
   def reportarSolicitantesLibro(self, libro: tuple): #(id, titulo)
-    socios = [p.getSocio() for p in self.prestamoDao.fetchAll() if p.getLibro().getCodigo() == libro[0]]
-    socios = [(s.getId(),) + s.asTuple()[0:2] for s in socios]
+    socios = self.buscarSolicitantesLibro(libro[0])
     self.crearPantallaSolicitantes(libro[1], socios)
+    
+  def buscarSolicitantesLibro(self, idLibro):
+    socios = [p.getSocio() for p in self.prestamoDao.fetchAll() if p.getLibro().getCodigo() == idLibro]
+    return [(s.getId(),) + s.asTuple()[0:2] for s in socios]
   
   def openValidarSocio(self):
     self.crearPantallaValidacionSocio()
@@ -60,7 +70,12 @@ class ReportesController:
     return (socio.getId(),) + socio.asTuple()
   
   def reportarPrestamoSocio(self, socio: tuple): 
-    self.crearPantallaPrestamoSocio(socio)
+    prestamos = self.buscarPrestamosSocio(socio[0])
+    self.crearPantallaPrestamoSocio(socio, prestamos)
+    
+  def buscarPrestamosSocio(self, idSocio):
+    prestamos = [p for p in self.prestamoDao.fetchAll() if p.getSocio().getId() == idSocio]
+    return [(p.getId(),) + (p.asTuple()[0],) + p.asTuple()[2:5] for p in prestamos]
   
   def reportarDemorados(self): 
     prestamos = [(p.getId(),) + p.asTuple()[0:4] for p in self.prestamoDao.fetchAll() if p.estaDemorado()]
@@ -92,8 +107,8 @@ class ReportesController:
   def crearPantallaValidacionSocio(self):
     PantallaValidacionSocio(self)
   
-  def crearPantallaPrestamoSocio(self, socio):
-    ...
+  def crearPantallaPrestamoSocio(self, socio, prestamos):
+    PantallaPrestamosSocio(self, socio=socio, prestamos=prestamos)
   
   def determinarStrategyImprimir(self, strategy):
     strategies = {

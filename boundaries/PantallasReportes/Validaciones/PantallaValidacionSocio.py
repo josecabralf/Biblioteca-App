@@ -71,7 +71,7 @@ class PantallaValidacionSocio:
     
   def aceptar(self):
     self.cancelar()
-    self.gestor.reportarPrestamoSocio(self.socio[0:2])
+    self.gestor.reportarPrestamoSocio(self.socio[0:3])
     
   def crearLblTitulo(self):
       self.frameLblPregunta = tk.Frame(self.ventana, background="#4c061d")

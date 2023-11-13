@@ -38,11 +38,12 @@ class ImprimirSolicitantesLibro(ImprimirStrategy):
      
                 
 class ImprimirPrestamoSocio(ImprimirStrategy):
+    dir = "prestamosSocio/"
     def imprimir(self, data: tuple):
-        with open(f"{path_reportes}{self.dir}prestamoSocio_{date.today()}.csv", "w") as file:
-            file.write("ID,Nombre,Apellido,Fecha de Prestamo,Fecha de Devolucion\n")
-            for id, nombre, apellido, fechaPrestamo, fechaDevolucion in data:
-                file.write(f"{id},{nombre},{apellido},{fechaPrestamo},{fechaDevolucion}\n")
+        with open(f"{path_reportes}{self.dir}prestamoSocio_{data[0]}_{date.today()}.csv", "w") as file:
+            file.write("ID,Titulo,Fecha de Inicio,Cantidad Días,Fecha de Devolucion\n")
+            for id, titulo, fechaIni, cantDias, fechaDevolucion in data[1]:
+                file.write(f"{id},{titulo},{fechaIni},{cantDias},{fechaDevolucion}\n")
                 
                 
 
