@@ -42,10 +42,13 @@ class ReportesController:
     self.crearPantallaValidacionLibro()
   
   def validarLibro(self, titulo):
-    ...
+    libro = self.libroDao.fetchByTitulo(titulo.upper())
+    return (libro.getCodigo(),)+(libro.asTuple()[0],)
   
-  def reportarSolicitantesLibro(self, libro): 
-    ...
+  def reportarSolicitantesLibro(self, libro: tuple): #(id, titulo)
+    socios = [p.getSocio() for p in self.prestamoDao.fetchAll() if p.getLibro().getCodigo() == libro[0]]
+    socios = [(s.getId(),) + s.asTuple()[0:2] for s in socios]
+    self.crearPantallaSolicitantes(libro[1], socios)
   
   def reportarPrestamoSocio(self): pass
   
@@ -70,7 +73,11 @@ class ReportesController:
   def crearPantallaDemorados(self, prestamos): 
     PantallaDemorados(self, prestamos=prestamos)
     
-  def crearPantallaValidacionLibro(self): PantallaValidacionLibro(self)
+  def crearPantallaValidacionLibro(self): 
+    PantallaValidacionLibro(self)
+    
+  def crearPantallaSolicitantes(self, libro, socios):
+    PantallaSolicitantes(self, libro=libro, solicitantes=socios)
   
   def determinarStrategyImprimir(self, strategy):
     strategies = {

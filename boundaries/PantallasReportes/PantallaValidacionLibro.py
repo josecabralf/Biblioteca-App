@@ -37,11 +37,11 @@ class PantallaValidacionLibro:
       self.mostrarError(str(e))
       return
     self.disableLibro()
-    self.crearDatosLibro(self.libro)
+    self.crearDatosLibro()
     self.enableAceptar()
   
-  def crearDatosLibro(self, libro):
-    lblNombre = tk.Label(self.frameDatosLibro, text=f"Titulo: {libro}", background="#4c061d", foreground="white")
+  def crearDatosLibro(self):
+    lblNombre = tk.Label(self.frameDatosLibro, text=f"Titulo: {self.libro[1]}", background="#4c061d", foreground="white")
     lblNombre.pack()
     self.frameDatosLibro.pack()
     
@@ -59,14 +59,11 @@ class PantallaValidacionLibro:
         btnCancelar.pack(side=tk.LEFT, padx=10)
         return self.frameBotonera
       
-  def cancelar(self):
-    self.gestor.resetCamposTransaccion()
-    self.ventana.destroy()
-    self.gestor.desbloquearPantalla()
+  def cancelar(self): self.ventana.destroy()
     
   def aceptar(self):
-    self.gestor.reportarSolicitantesLibro(self.libro)
     self.cancelar()   
+    self.gestor.reportarSolicitantesLibro(self.libro)
     
   def crearTitulo(self):
       self.frameLblPregunta = tk.Frame(self.ventana, background="#4c061d")
@@ -77,7 +74,7 @@ class PantallaValidacionLibro:
   def crearEntryLibro(self):
     self.frameLibro = tk.Frame(self.ventana, background="#4c061d")
     self.frameEntryLibro = tk.Frame(self.frameLibro, background="#4c061d")
-    lblLibro = tk.Label(self.frameEntryLibro, text="Id de Libro:", background="#4c061d", foreground="white")
+    lblLibro = tk.Label(self.frameEntryLibro, text="Titulo:", background="#4c061d", foreground="white")
     lblLibro.grid(row=0, column=0, padx=10, pady=10)
     self.varLibro = tk.StringVar()
     self.campoLibro = tk.Entry(self.frameEntryLibro, textvariable=self.varLibro)
