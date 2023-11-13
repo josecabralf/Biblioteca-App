@@ -9,20 +9,23 @@ class ImprimirStrategy(Singleton):
     
     
 class ImprimirLibroEstados(ImprimirStrategy):
+    dir = "libroEstados/"
     def imprimir(self, data: dict):
-        with open(f"{path_reportes}libroEstados_{date.today()}.csv", "w") as file:
+        with open(f"{path_reportes}{self.dir}libroEstados_{date.today()}.csv", "w") as file:
             file.write("Estado,Cantidad\n")
             for estado, cantidad in data.items():
                 file.write(f"{estado},{cantidad}\n")
 
 
 class ImprimirRestock(ImprimirStrategy):
+    dir = "precioReposicion/"
     def imprimir(self, data: tuple):
-        with open(f"{path_reportes}restock_{date.today()}.csv", "w") as file:
+        with open(f"{path_reportes}{self.dir}precioReposicion_{date.today()}.csv", "w") as file:
             file.write("ID,Nombre,Precio\n")
-            for id, nombre, precio in data:
+            for id, nombre, precio in data[0]:
                 file.write(f"{id},{nombre},{precio}\n")
-                
+            file.write(f"Total,,{data[1]}\n")
+            
 
 class ImprimirSolicitantesLibro(ImprimirStrategy):
     def imprimir(self, data: tuple):

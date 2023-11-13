@@ -30,8 +30,9 @@ class ReportesController:
     self.crearPantallaLibrosEstado(dictFrecuenciaEstado)
   
   def reportarRestock(self):
-    libros = [l.asTuple()[0:2] for l in self.libroDao.fetchAll() if l.estaExtraviado()]
-    precioReposicionTotal = sum([l[1] for l in libros])
+    libros = [(l.getCodigo(),) + l.asTuple()[0:2] for l in self.libroDao.fetchAll() if l.estaExtraviado()]
+    #(id, nombre, precio)
+    precioReposicionTotal = sum([l[2] for l in libros])
     self.crearPantallaRestock(libros, precioReposicionTotal)
   
   def reportarSolicitantesLibro(self): pass
@@ -46,8 +47,9 @@ class ReportesController:
     self.pantalla.destruir()
     self.pantalla.volver()
     
-  def imprimir(self, strategy, data): 
+  def imprimir(self, pantalla, strategy, data): 
     self.determinarStrategyImprimir(strategy).imprimir(data)
+    pantalla.showInfo("Reporte generado con exito")
   
   def crearPantallaLibrosEstado(self, dictFrecuenciaEstado): PantallaLibroEstados(self, dictFrecuenciaEstado)
     
